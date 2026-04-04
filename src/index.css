@@ -1,113 +1,130 @@
 @import "tailwindcss";
 
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+/* Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+/* ── Typography ───────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+body { margin: 0; }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
-body {
-  margin: 0;
+/* ── Scrollbar ─────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: #f59e0b transparent; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 99px; }
+
+/* ── Hero ambient glow ─────────────────────────────────── */
+.hero-glow {
+  background: radial-gradient(ellipse 70% 60% at 10% 60%, rgba(245,158,11,0.07) 0%, transparent 65%);
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/* ── Gallery infinite scroll ───────────────────────────── */
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* ── Fade-up animation ─────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.anim        { opacity: 0; animation: fade-up 0.5s ease forwards; }
+.anim-d1     { animation-delay: 80ms;  }
+.anim-d2     { animation-delay: 160ms; }
+.anim-d3     { animation-delay: 240ms; }
+.anim-d4     { animation-delay: 320ms; }
+.anim-d5     { animation-delay: 400ms; }
+
+/* ──────────────────────────────────────────────────────── */
+/* LIGHT MODE OVERRIDES                                     */
+/* Applied when .dark class is NOT present on <html>        */
+/* Unlayered CSS beats @layer utilities — no !important     */
+/* ──────────────────────────────────────────────────────── */
+
+/* Base */
+html:not(.dark) { background-color: #fafafa; color: #18181b; }
+html:not(.dark) body { background-color: #fafafa; }
+
+/* ── Section / card backgrounds ── */
+html:not(.dark) .bg-zinc-950   { background-color: #f4f4f5; }
+html:not(.dark) .bg-zinc-900   { background-color: #ffffff; }
+html:not(.dark) .bg-zinc-800   { background-color: #e4e4e7; }
+
+/* opacity-variant backgrounds (Tailwind generates .bg-zinc-950\/90 etc.) */
+html:not(.dark) .bg-zinc-950\/90  { background-color: rgba(244,244,245,0.94); }
+html:not(.dark) .bg-zinc-950\/50  { background-color: rgba(244,244,245,0.5);  }
+html:not(.dark) .bg-zinc-950\/30  { background-color: rgba(244,244,245,0.3);  }
+html:not(.dark) .bg-zinc-900\/80  { background-color: rgba(255,255,255,0.85); }
+html:not(.dark) .bg-zinc-900\/60  { background-color: rgba(255,255,255,0.6);  }
+html:not(.dark) .bg-zinc-900\/40  { background-color: rgba(255,255,255,0.4);  }
+html:not(.dark) .bg-zinc-900\/30  { background-color: rgba(0,0,0,0.03);       }
+html:not(.dark) .bg-black\/60     { background-color: rgba(0,0,0,0.25);       }
+
+/* ── Borders ── */
+html:not(.dark) .border-zinc-800        { border-color: #e4e4e7; }
+html:not(.dark) .border-zinc-800\/60    { border-color: rgba(228,228,231,0.7); }
+html:not(.dark) .border-zinc-800\/80    { border-color: rgba(228,228,231,0.85); }
+html:not(.dark) .border-zinc-800\/40    { border-color: rgba(228,228,231,0.5); }
+html:not(.dark) .border-zinc-700        { border-color: #d4d4d8; }
+html:not(.dark) .border-b.border-zinc-800 { border-color: #e4e4e7; }
+
+/* divide utilities */
+html:not(.dark) .divide-zinc-800\/60 > * + * { border-color: rgba(228,228,231,0.7); }
+html:not(.dark) .divide-zinc-800     > * + * { border-color: #e4e4e7; }
+
+/* ── Text ── */
+html:not(.dark) .text-zinc-100 { color: #18181b; }
+html:not(.dark) .text-zinc-200 { color: #27272a; }
+html:not(.dark) .text-zinc-300 { color: #3f3f46; }
+html:not(.dark) .text-zinc-400 { color: #52525b; }
+html:not(.dark) .text-zinc-500 { color: #71717a; }
+html:not(.dark) .text-zinc-600 { color: #71717a; }
+html:not(.dark) .text-zinc-700 { color: #a1a1aa; }
+html:not(.dark) .text-zinc-800 { color: #d4d4d8; }
+
+/* ── Badge (default variant uses hardcoded bg-zinc-800) ── */
+html:not(.dark) .bg-zinc-800.text-zinc-400 {
+  background-color: #f4f4f5;
+  color: #52525b;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+/* ── Gallery overlays ── */
+html:not(.dark) .group:hover .bg-zinc-950\/60 { background-color: rgba(0,0,0,0.3); }
+html:not(.dark) .from-zinc-950\/95            { --tw-gradient-from: rgba(0,0,0,0.6); }
+
+/* ── Navbar backdrop ── */
+html:not(.dark) header {
+  --navbar-bg: rgba(244,244,245,0.94);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ── Hero glow — lighter in light mode ── */
+html:not(.dark) .hero-glow {
+  background: radial-gradient(ellipse 70% 60% at 10% 60%, rgba(245,158,11,0.06) 0%, transparent 65%);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* ── Bottom gradient fade in Hero ── */
+html:not(.dark) .from-zinc-950 {
+  --tw-gradient-from: #f4f4f5;
 }
+
+/* ── Scrollbar light mode ── */
+html:not(.dark) * { scrollbar-color: #f59e0b #e4e4e7; }
+html:not(.dark) ::-webkit-scrollbar-thumb { background: #f59e0b; }
+html:not(.dark) ::-webkit-scrollbar-track { background: #e4e4e7; }
+
+/* ── Hover row highlights ── */
+html:not(.dark) .hover\:bg-zinc-900\/30:hover { background-color: rgba(0,0,0,0.03); }
