@@ -1,0 +1,22 @@
+[
+  {
+    "category": "Languages",
+    "items": ["Go", "TypeScript", "Rust", "Python", "Ruby", "SQL"]
+  },
+  {
+    "category": "Backend",
+    "items": ["Node.js", "gRPC", "GraphQL", "REST", "Kafka", "Redis", "PostgreSQL", "MySQL", "ClickHouse"]
+  },
+  {
+    "category": "Frontend",
+    "items": ["React", "Next.js", "Remix", "Tailwind CSS", "WebAssembly"]
+  },
+  {
+    "category": "Infrastructure",
+    "items": ["Kubernetes", "Docker", "Terraform", "AWS", "GCP", "Cloudflare Workers", "GitHub Actions"]
+  },
+  {
+    "category": "Practices",
+    "items": ["System Design", "DDD", "TDD", "SLO/SRE", "API Design", "Code Review", "Technical Writing"]
+  }
+]

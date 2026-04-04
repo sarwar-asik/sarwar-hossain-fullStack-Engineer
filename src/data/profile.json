@@ -1,0 +1,23 @@
+{
+  "photo": null,
+  "name": "Alex Rahman",
+  "initials": "AR",
+  "role": "Senior Software Engineer",
+  "tagline": "Building scalable systems that serve millions.",
+  "bio": "8+ years designing distributed systems, developer tools, and high-traffic APIs. I care deeply about code quality, engineering culture, and shipping products that create real impact.",
+  "location": "San Francisco, CA",
+  "email": "alex@example.com",
+  "resumeUrl": "#",
+  "available": true,
+  "social": [
+    { "name": "GitHub",   "url": "https://github.com",   "icon": "github"   },
+    { "name": "LinkedIn", "url": "https://linkedin.com", "icon": "linkedin" },
+    { "name": "Twitter",  "url": "https://twitter.com",  "icon": "twitter"  }
+  ],
+  "stats": [
+    { "label": "Years Experience",   "value": "8+"   },
+    { "label": "Projects Shipped",   "value": "40+"  },
+    { "label": "Engineers Mentored", "value": "15+"  },
+    { "label": "Open Source Stars",  "value": "2.4k" }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Distributed Task Queue",
+    "description": "A high-throughput, fault-tolerant job queue built on top of Redis Streams. Supports priorities, retries with exponential backoff, dead-letter queues, and real-time monitoring dashboard.",
+    "impact": "Powers 12M+ jobs/day across 200+ internal services",
+    "tech": ["Go", "Redis", "gRPC", "React", "Docker"],
+    "gradientFrom": "#2563eb",
+    "gradientTo": "#1d4ed8",
+    "githubUrl": "https://github.com",
+    "liveUrl": "",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "title": "OpenAPI Schema Validator",
+    "description": "CLI and library for validating OpenAPI 3.x specs against real HTTP traffic. Catches breaking changes before they reach production. Integrates with CI/CD pipelines.",
+    "impact": "Used by 4,000+ developers, 800+ GitHub stars",
+    "tech": ["TypeScript", "Node.js", "Jest", "GitHub Actions"],
+    "gradientFrom": "#7c3aed",
+    "gradientTo": "#6d28d9",
+    "githubUrl": "https://github.com",
+    "liveUrl": "https://example.com",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "title": "Edge Config SDK",
+    "description": "Ultra-fast read-only key-value store for edge environments. Sub-millisecond reads, global replication, and zero cold starts. Compatible with Cloudflare Workers, Vercel Edge, and Deno Deploy.",
+    "impact": "Serving 500M+ reads/month with <1ms p99 latency",
+    "tech": ["TypeScript", "Rust", "WebAssembly", "Terraform"],
+    "gradientFrom": "#0891b2",
+    "gradientTo": "#0e7490",
+    "githubUrl": "https://github.com",
+    "liveUrl": "",
+    "featured": true
+  },
+  {
+    "id": 4,
+    "title": "Telemetry Pipeline",
+    "description": "Streaming observability pipeline that collects, transforms, and routes logs, metrics, and traces from heterogeneous sources. Built with a plugin-based processor architecture.",
+    "impact": "Replaced a $300k/year vendor tool, saving 80% cost",
+    "tech": ["Go", "Kafka", "ClickHouse", "Grafana", "Kubernetes"],
+    "gradientFrom": "#059669",
+    "gradientTo": "#047857",
+    "githubUrl": "https://github.com",
+    "liveUrl": "",
+    "featured": false
+  },
+  {
+    "id": 5,
+    "title": "Remix Auth Starter",
+    "description": "Production-ready authentication boilerplate for Remix applications. Includes email/password, OAuth (GitHub, Google), magic links, RBAC, and session management.",
+    "impact": "1,500+ GitHub stars, 300+ forks",
+    "tech": ["TypeScript", "Remix", "Prisma", "PostgreSQL"],
+    "gradientFrom": "#dc2626",
+    "gradientTo": "#b91c1c",
+    "githubUrl": "https://github.com",
+    "liveUrl": "https://example.com",
+    "featured": false
+  }
+]

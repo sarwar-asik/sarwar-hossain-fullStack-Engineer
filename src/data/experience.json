@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "company": "Stripe",
+    "role": "Senior Software Engineer",
+    "period": "2022 – Present",
+    "location": "San Francisco, CA",
+    "current": true,
+    "achievements": [
+      "Led redesign of the payment processing pipeline — reduced p99 latency by 40% and achieved 99.99% uptime SLA",
+      "Architected a microservices migration from a monolith, enabling independent deployment across 12 services",
+      "Built a real-time fraud detection system processing 50k transactions/second using stream processing",
+      "Mentored 5 engineers; established code review standards and engineering best practices that halved bug escape rate"
+    ],
+    "tech": ["Go", "Kubernetes", "PostgreSQL", "Redis", "gRPC", "Kafka"]
+  },
+  {
+    "id": 2,
+    "company": "Cloudflare",
+    "role": "Software Engineer II",
+    "period": "2019 – 2022",
+    "location": "San Francisco, CA",
+    "current": false,
+    "achievements": [
+      "Designed and shipped the Workers KV global storage layer, now serving 1M+ developer accounts",
+      "Reduced cold-start latency for edge functions by 60% through V8 isolate pre-warming strategies",
+      "Co-authored internal RFCs that became the foundation for the Workers platform architecture",
+      "Drove adoption of SLO-based reliability practices across the edge compute team"
+    ],
+    "tech": ["Rust", "C++", "V8", "TypeScript", "Terraform", "ClickHouse"]
+  },
+  {
+    "id": 3,
+    "company": "Shopify",
+    "role": "Software Engineer",
+    "period": "2017 – 2019",
+    "location": "Ottawa, Canada (Remote)",
+    "current": false,
+    "achievements": [
+      "Built core checkout flow improvements that contributed to a 12% lift in conversion rate",
+      "Scaled the order processing service to handle 5x peak load during Black Friday 2018",
+      "Introduced GraphQL API layer for the Storefront API, later adopted by 100k+ merchants"
+    ],
+    "tech": ["Ruby on Rails", "React", "GraphQL", "MySQL", "Elasticsearch"]
+  },
+  {
+    "id": 4,
+    "company": "Freelance",
+    "role": "Full-Stack Developer",
+    "period": "2015 – 2017",
+    "location": "Remote",
+    "current": false,
+    "achievements": [
+      "Delivered 15+ web applications for clients across fintech, e-commerce, and SaaS verticals",
+      "Built a custom CMS and analytics dashboard used by 30k monthly active users",
+      "Managed full project lifecycle from requirements through deployment and support"
+    ],
+    "tech": ["Node.js", "React", "MongoDB", "AWS", "Docker"]
+  }
+]

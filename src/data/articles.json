@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "Why I Stopped Writing Microservices",
+    "platform": "Medium",
+    "platformColor": "#000000",
+    "date": "Mar 2024",
+    "readTime": "8 min",
+    "description": "A critical look at when microservices hurt more than they help — and the architectural patterns that replaced them in our stack.",
+    "url": "https://medium.com"
+  },
+  {
+    "id": 2,
+    "title": "Building a 50k TPS Fraud Detection System in Go",
+    "platform": "The Pragmatic Engineer",
+    "platformColor": "#2563eb",
+    "date": "Jan 2024",
+    "readTime": "14 min",
+    "description": "A deep dive into stream processing architecture, Redis data structures, and the tradeoffs we made to hit our latency targets without sacrificing accuracy.",
+    "url": "https://blog.pragmaticengineer.com"
+  },
+  {
+    "id": 3,
+    "title": "The Hidden Costs of Distributed Transactions",
+    "platform": "Personal Blog",
+    "platformColor": "#7c3aed",
+    "date": "Oct 2023",
+    "readTime": "10 min",
+    "description": "Two-phase commit, sagas, and outbox patterns explained through real incidents. When correctness comes at the price of availability.",
+    "url": "https://example.com"
+  },
+  {
+    "id": 4,
+    "title": "How We Cut P99 Latency by 40% Without Rewriting Anything",
+    "platform": "Stripe Blog",
+    "platformColor": "#635bff",
+    "date": "Aug 2023",
+    "readTime": "12 min",
+    "description": "Profiling, connection pool tuning, and query plan analysis — a systematic approach to performance engineering that doesn't require a ground-up rewrite.",
+    "url": "https://stripe.com/blog"
+  },
+  {
+    "id": 5,
+    "title": "Designing APIs That Last",
+    "platform": "Dev.to",
+    "platformColor": "#08090a",
+    "date": "May 2023",
+    "readTime": "7 min",
+    "description": "Versioning strategies, backwards compatibility, and the API design principles we've learned from maintaining public APIs used by millions of developers.",
+    "url": "https://dev.to"
+  }
+]
