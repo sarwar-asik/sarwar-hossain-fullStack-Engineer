@@ -76,7 +76,7 @@ export default function Gallery() {
       <div className="max-w-6xl mx-auto px-6 mb-12">
         {/* Header */}
         <div className="flex items-center gap-4 mb-5">
-          <span className="font-mono text-xs text-amber-500">// 07 · life</span>
+          <span className="font-mono text-xs text-amber-500">// 06 · life</span>
           <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
         </div>
 
