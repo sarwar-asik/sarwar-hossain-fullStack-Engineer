@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import Badge from '../ui/Badge'
+import Icon from '../ui/Icon'
 import challenges from '../../data/challenges.json'
 
 /* ── Severity config ────────────────────────────────────── */
@@ -252,9 +254,13 @@ function ChallengeCard({ challenge, featured = false }) {
 }
 
 /* ── Section ────────────────────────────────────────────── */
+const INITIAL_GRID_COUNT = 2   // non-featured cards shown before "see all"
+
 export default function Challenges() {
-  const featured = challenges.filter(c => c.featured)
-  const rest     = challenges.filter(c => !c.featured)
+  const [showAll, setShowAll] = useState(false)
+  const featured  = challenges.filter(c => c.featured)
+  const rest      = challenges.filter(c => !c.featured)
+  const visibleRest = showAll ? rest : rest.slice(0, INITIAL_GRID_COUNT)
 
   return (
     <section id="challenges" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
@@ -263,7 +269,7 @@ export default function Challenges() {
         {/* ── War-room header ── */}
         <div className="mb-14">
           <div className="flex items-center gap-4 mb-5">
-            <span className="font-mono text-xs text-amber-500">// 05 · war room</span>
+            <span className="font-mono text-xs text-amber-500">// 01 · war room</span>
             <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
             <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-700 border border-zinc-300 dark:border-zinc-800 px-2 py-0.5 rounded">
               {challenges.length} incidents · all resolved
@@ -285,15 +291,11 @@ export default function Challenges() {
               All systems operational
             </span>
             <span className="text-zinc-300 dark:text-zinc-800" aria-hidden="true">|</span>
-            <span className="text-zinc-400 dark:text-zinc-600">
-              Last incident: {challenges[challenges.length - 1]?.date}
-            </span>
-            <span className="text-zinc-300 dark:text-zinc-800" aria-hidden="true">|</span>
             <span className="text-zinc-400 dark:text-zinc-600">MTTR avg: 3.4 hrs</span>
           </div>
         </div>
 
-        {/* ── Featured P0 cards (full width, side-by-side content+visual) ── */}
+        {/* ── Featured P0 cards ── */}
         <div className="space-y-4 mb-4">
           {featured.map(c => (
             <ChallengeCard key={c.id} challenge={c} featured />
@@ -302,10 +304,23 @@ export default function Challenges() {
 
         {/* ── P1/P2/P3 grid ── */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {rest.map(c => (
+          {visibleRest.map(c => (
             <ChallengeCard key={c.id} challenge={c} />
           ))}
         </div>
+
+        {/* ── See all toggle ── */}
+        {rest.length > INITIAL_GRID_COUNT && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setShowAll(v => !v)}
+              className="inline-flex items-center gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-500 hover:text-amber-500 dark:hover:text-amber-400 border border-zinc-300 dark:border-zinc-800 hover:border-amber-500/40 px-5 py-2.5 rounded-lg transition-all duration-200"
+            >
+              <Icon name={showAll ? 'chevronUp' : 'chevronDown'} className="w-3.5 h-3.5" />
+              {showAll ? 'Show less' : `+ ${rest.length - INITIAL_GRID_COUNT} more incidents`}
+            </button>
+          </div>
+        )}
 
       </div>
     </section>

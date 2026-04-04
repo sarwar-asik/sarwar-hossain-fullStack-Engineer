@@ -55,7 +55,7 @@ export default function Articles() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="max-w-3xl">
           <SectionHeader
-            label="07 · writing"
+            label="05 · writing"
             title="Articles"
             description="Writing about distributed systems, real-time architecture, and the hard problems I've solved in production."
           />
