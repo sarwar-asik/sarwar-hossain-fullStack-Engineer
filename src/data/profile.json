@@ -1,23 +1,23 @@
 {
-  "photo": null,
-  "name": "Alex Rahman",
-  "initials": "AR",
-  "role": "Senior Software Engineer",
-  "tagline": "Building scalable systems that serve millions.",
-  "bio": "8+ years designing distributed systems, developer tools, and high-traffic APIs. I care deeply about code quality, engineering culture, and shipping products that create real impact.",
-  "location": "San Francisco, CA",
-  "email": "alex@example.com",
-  "resumeUrl": "#",
+  "photo": "https://i.ibb.co.com/WvwMmCw1/profile.jpg",
+  "name": "Sarwar Hossain",
+  "initials": "Sarwar",
+  "role": "Backend Engineer",
+  "tagline": "Building distributed systems that scale.",
+  "bio": "Backend engineer specializing in Node.js microservices, real-time systems, and high-traffic APIs. I design for failure modes, reach ~80% test coverage, and ship code the next engineer can reason about.",
+  "location": "Dhaka, Bangladesh",
+  "email": "sarwarasik@gmail.com",
+  "resumeUrl": "https://drive.google.com/file/d/1NSpEFxwPQkg-SRZw83MtwBPvA29rfAG_/view",
   "available": true,
   "social": [
-    { "name": "GitHub",   "url": "https://github.com",   "icon": "github"   },
-    { "name": "LinkedIn", "url": "https://linkedin.com", "icon": "linkedin" },
-    { "name": "Twitter",  "url": "https://twitter.com",  "icon": "twitter"  }
+    { "name": "GitHub", "url": "https://github.com/sarwar-asik", "icon": "github" },
+    { "name": "LinkedIn", "url": "https://linkedin.com/in/sarwar-asik", "icon": "linkedin" },
+    { "name": "Twitter", "url": "https://twitter.com/sarwarasik", "icon": "twitter" }
   ],
   "stats": [
-    { "label": "Years Experience",   "value": "8+"   },
-    { "label": "Projects Shipped",   "value": "40+"  },
-    { "label": "Engineers Mentored", "value": "15+"  },
-    { "label": "Open Source Stars",  "value": "2.4k" }
+    { "label": "Microservices Built", "value": "10+" },
+    { "label": "Test Coverage", "value": "~80%" },
+    { "label": "Production Apps", "value": "6+" },
+    { "label": "Payment Gateways", "value": "5+" }
   ]
 }

@@ -3,13 +3,14 @@ import Icon from '../ui/Icon'
 import profile from '../../data/profile.json'
 
 const NAV_LINKS = [
-  { label: 'About',      href: '#about'       },
+  { label: 'War Room',   href: '#challenges'  },
   { label: 'Experience', href: '#experience'  },
   { label: 'Projects',   href: '#projects'    },
-  { label: 'War Room',   href: '#challenges'  },
   { label: 'Skills',     href: '#skills'      },
-  { label: 'Life',       href: '#gallery'     },
   { label: 'Articles',   href: '#articles'    },
+  { label: 'Life',       href: '#gallery'     },
+  { label: 'About',      href: '#about'       },
+  { label: 'Contact',    href: '#contact'     },
 ]
 
 export default function Navbar({ theme, onThemeToggle }) {

@@ -1,18 +1,20 @@
-import Icon from '../ui/Icon'
-import Button from '../ui/Button'
-import profile from '../../data/profile.json'
+import { useState } from 'react'
+import Icon from "../ui/Icon";
+import Button from "../ui/Button";
+import profile from "../../data/profile.json";
 
 /* ── Profile photo / avatar ─────────────────────────────── */
 function ProfileAvatar() {
-  const { name, initials, role, available, photo } = profile
+  const { name, initials, role, available, photo } = profile;
+  const [imgFailed, setImgFailed] = useState(false)
+  const showPhoto = photo && !imgFailed
 
   return (
     <div className="hidden lg:flex items-center justify-center relative select-none">
-
       {/* Ambient glow blob */}
       <div
         className="absolute w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)' }}
+        style={{ background: "radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)" }}
         aria-hidden="true"
       />
 
@@ -20,40 +22,35 @@ function ProfileAvatar() {
       <div
         className="absolute w-96 h-96 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(245,158,11,1) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,1) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
+          backgroundImage: "linear-gradient(rgba(245,158,11,1) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,1) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
         }}
         aria-hidden="true"
       />
 
       <div className="relative z-10 flex flex-col items-center gap-5">
-
         {/* Photo frame */}
         <div className="relative w-64 h-64">
-
           {/* Outer decorative ring */}
           <div className="absolute -inset-3 rounded-full border border-amber-500/15 border-dashed animate-[spin_30s_linear_infinite]" aria-hidden="true" />
           <div className="absolute -inset-1.5 rounded-full border border-amber-500/20" aria-hidden="true" />
 
           {/* Photo / initials */}
           <div className="w-full h-full rounded-full overflow-hidden border-2 border-amber-500/30 bg-zinc-900 dark:bg-zinc-900 flex items-center justify-center shadow-2xl">
-            {photo ? (
-              <img src={photo} alt={name} className="w-full h-full object-cover object-top" />
+            {showPhoto ? (
+              <img
+                src={photo}
+                alt={name}
+                width={256}
+                height={256}
+                fetchpriority="high"
+                className="w-full h-full object-cover object-top"
+                onError={() => setImgFailed(true)}
+              />
             ) : (
-              /* Stylised initials avatar */
-              <div
-                className="w-full h-full flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #27272a 0%, #18181b 60%, #1c1917 100%)' }}
-              >
-                {/* Subtle amber radial inside avatar */}
-                <div
-                  className="absolute inset-0 rounded-full"
-                  style={{ background: 'radial-gradient(circle at 30% 30%, rgba(245,158,11,0.08), transparent 60%)' }}
-                  aria-hidden="true"
-                />
-                <span className="font-mono text-6xl font-bold text-zinc-700 z-10 select-none">
-                  {initials}
-                </span>
+              <div className="w-full h-full flex items-center justify-center relative" style={{ background: 'linear-gradient(135deg, #27272a 0%, #18181b 60%, #1c1917 100%)' }}>
+                <div className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle at 30% 30%, rgba(245,158,11,0.08), transparent 60%)' }} aria-hidden="true" />
+                <span className="font-mono text-6xl font-bold text-zinc-700 z-10 select-none">{initials}</span>
               </div>
             )}
           </div>
@@ -70,50 +67,38 @@ function ProfileAvatar() {
         {/* Name + role pill */}
         <div className="text-center">
           <p className="font-semibold text-zinc-200 dark:text-zinc-200 text-sm">{name}</p>
-          <p className="font-mono text-[11px] text-zinc-500 mt-0.5">
-            {role.toLowerCase().replace(/ /g, '_')}
-          </p>
+          <p className="font-mono text-[11px] text-zinc-500 mt-0.5">{role.toLowerCase().replace(/ /g, "_")}</p>
         </div>
 
         {/* Floating stat cards */}
         <div className="flex items-center gap-3 flex-wrap justify-center">
-          {profile.stats.slice(0, 3).map(s => (
-            <div
-              key={s.label}
-              className="bg-zinc-900/80 dark:bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2 text-center backdrop-blur-sm"
-            >
+          {profile.stats.slice(0, 3).map((s) => (
+            <div key={s.label} className="bg-zinc-900/80 dark:bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2 text-center backdrop-blur-sm">
               <div className="text-base font-bold text-zinc-100 dark:text-zinc-100">{s.value}</div>
-              <div className="font-mono text-[9px] text-zinc-600 mt-px">
-                {s.label.toLowerCase().replace(/ /g, '_')}
-              </div>
+              <div className="font-mono text-[9px] text-zinc-600 mt-px">{s.label.toLowerCase().replace(/ /g, "_")}</div>
             </div>
           ))}
         </div>
-
       </div>
     </div>
-  )
+  );
 }
 
 /* ── Hero section ───────────────────────────────────────── */
 export default function Hero() {
-  const { name, role, bio, available, social, stats } = profile
-  const [first, ...rest] = name.split(' ')
+  const { name, role, bio, available, social, stats } = profile;
+  const [first, ...rest] = name.split(" ");
 
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950"
-    >
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950">
       {/* Ambient amber glow — top-left */}
       <div className="hero-glow absolute inset-0 pointer-events-none" aria-hidden="true" />
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-zinc-950 to-transparent pointer-events-none" aria-hidden="true" />
+      <div className="absolute bottom-0 inset-x-0 h-32 bg-linear-to-t from-zinc-950 to-transparent pointer-events-none" aria-hidden="true" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
         <div className="grid lg:grid-cols-[1fr_420px] gap-16 items-center">
-
           {/* ── Left: content ── */}
           <div>
             {/* Available status */}
@@ -131,25 +116,21 @@ export default function Hero() {
             {/* Name */}
             <h1 className="anim anim-d1 font-bold tracking-tight leading-none text-zinc-100 dark:text-zinc-100 mb-6">
               <span className="block text-6xl sm:text-7xl lg:text-8xl">{first}</span>
-              <span className="block text-6xl sm:text-7xl lg:text-8xl text-amber-500">{rest.join(' ')}.</span>
+              <span className="block text-6xl sm:text-7xl lg:text-8xl text-amber-500">{rest.join(" ")}.</span>
             </h1>
 
             {/* Role */}
-            <p className="anim anim-d2 font-mono text-sm text-zinc-500 mb-6 tracking-wide">
-              {role.toLowerCase().replace(/ /g, '_')}
-            </p>
+            <p className="anim anim-d2 font-mono text-sm text-zinc-500 mb-6 tracking-wide">{role.toLowerCase().replace(/ /g, "_")}</p>
 
             {/* Bio */}
-            <p className="anim anim-d3 text-base text-zinc-400 dark:text-zinc-400 max-w-lg leading-relaxed mb-10">
-              {bio}
-            </p>
+            <p className="anim anim-d3 text-base text-zinc-400 dark:text-zinc-400 max-w-lg leading-relaxed mb-10">{bio}</p>
 
             {/* Stats row */}
             <div className="anim anim-d3 flex flex-wrap items-center gap-x-8 gap-y-4 py-6 border-t border-b border-zinc-800 dark:border-zinc-800 mb-10">
-              {stats.map(s => (
+              {stats.map((s) => (
                 <div key={s.label}>
                   <div className="text-2xl font-bold text-zinc-100 dark:text-zinc-100">{s.value}</div>
-                  <div className="font-mono text-xs text-zinc-600 mt-0.5">{s.label.toLowerCase().replace(/ /g, '_')}</div>
+                  <div className="font-mono text-xs text-zinc-600 mt-0.5">{s.label.toLowerCase().replace(/ /g, "_")}</div>
                 </div>
               ))}
             </div>
@@ -160,13 +141,13 @@ export default function Hero() {
                 View Projects
                 <Icon name="arrowRight" className="w-4 h-4" />
               </Button>
-              <Button href={`mailto:${profile.email}`} variant="outline" size="lg">
+              <Button href="#contact" variant="outline" size="lg">
                 <Icon name="mail" className="w-4 h-4" />
                 Get in Touch
               </Button>
 
               <div className="flex items-center gap-1 ml-auto">
-                {social.map(s => (
+                {social.map((s) => (
                   <a
                     key={s.name}
                     href={s.url}
@@ -184,7 +165,6 @@ export default function Hero() {
 
           {/* ── Right: profile visual (desktop only) ── */}
           <ProfileAvatar />
-
         </div>
       </div>
 
@@ -195,5 +175,5 @@ export default function Hero() {
         </svg>
       </div>
     </section>
-  )
+  );
 }
