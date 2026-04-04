@@ -6,7 +6,7 @@ export default function Skills() {
     <section id="skills" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
-          label="04 · toolkit"
+          label="06 · toolkit"
           title="Skills"
           description="Grouped by domain — each chosen for a specific hard problem."
         />

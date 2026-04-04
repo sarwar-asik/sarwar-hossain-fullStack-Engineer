@@ -55,26 +55,36 @@ export default function Articles() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="max-w-3xl">
           <SectionHeader
-            label="05 · writing"
+            label="07 · writing"
             title="Articles"
-            description="I write about distributed systems, engineering culture, and tradeoffs no one talks about."
+            description="Writing about distributed systems, real-time architecture, and the hard problems I've solved in production."
           />
 
-          <div>
-            {articles.map(a => (
-              <ArticleRow key={a.id} article={a} />
-            ))}
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-zinc-800/60">
-            <a
-              href="#"
-              className="inline-flex items-center gap-1.5 font-mono text-xs text-zinc-600 hover:text-amber-400 transition-colors"
-            >
-              all_articles()
-              <Icon name="arrowRight" className="w-3 h-3" />
-            </a>
-          </div>
+          {articles.length > 0 ? (
+            <>
+              <div>
+                {articles.map(a => (
+                  <ArticleRow key={a.id} article={a} />
+                ))}
+              </div>
+              <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800/60">
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500 hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+                >
+                  all_articles()
+                  <Icon name="arrowRight" className="w-3 h-3" />
+                </a>
+              </div>
+            </>
+          ) : (
+            <div className="py-12 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-lg text-center">
+              <p className="font-mono text-sm text-zinc-400 dark:text-zinc-600">// coming_soon()</p>
+              <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-700">
+                Articles on microservices, real-time systems, and payment integrity — in progress.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

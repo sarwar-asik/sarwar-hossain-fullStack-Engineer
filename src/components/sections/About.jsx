@@ -3,10 +3,10 @@ import SectionHeader from '../ui/SectionHeader'
 import profile from '../../data/profile.json'
 
 const VALUES = [
-  { title: 'Systems thinking',  body: 'I design for failure, think in tradeoffs, and sweat the details that most teams defer until production.' },
-  { title: 'Code that lasts',   body: 'Clean interfaces, clear contracts, tests that make refactoring safe. Complexity is the enemy.' },
-  { title: 'Shipping wins',     body: 'Perfect is shipped iteratively. I bias toward action, instrument everything, and let data drive decisions.' },
-  { title: 'Raising the floor', body: "The best engineering orgs I've been in had a culture of rigorous review, shared ownership, and mentorship." },
+  { title: 'Async-first design',   body: 'The synchronous critical path should do one thing fast. Cache revalidation, emails, notifications — they belong in background workers, not inline.' },
+  { title: 'Failure ownership',    body: 'I debug live incidents under pressure, run honest post-mortems, and implement fixes that prevent recurrence — not workarounds that defer the problem.' },
+  { title: 'Test coverage = trust', body: 'Reaching ~80% coverage with Jest and SuperTest is not a metric game. It\'s the foundation that lets teams refactor and ship without fear.' },
+  { title: 'Architecture with intent', body: 'Service boundaries, messaging protocols, and scaling strategies are deliberate decisions with documented trade-offs — not defaults inherited from a tutorial.' },
 ]
 
 function ProfilePhoto() {
@@ -81,18 +81,19 @@ export default function About() {
 
             <div className="space-y-4 text-sm text-zinc-500 dark:text-zinc-400 leading-loose">
               <p>
-                I'm a software engineer who's been building systems people rely on for over eight years — from raw edge
-                runtimes in C++ to consumer-facing React UIs, but my deepest work has been in the backend: distributed
-                systems, data pipelines, and APIs at scale.
+                I'm a backend engineer based in Dhaka, building distributed systems with Node.js and TypeScript.
+                My deepest work is in microservice architecture, real-time systems, and high-traffic APIs — currently
+                across StarConnect's 10+ service platform and Bright Future Soft's production applications.
               </p>
               <p>
-                I gravitate toward problems with hard constraints: latency budgets, consistency guarantees, failure modes
-                at 10× traffic. I write code that fails gracefully, instruments itself, and lets the next engineer sleep
-                through the weekend.
+                I gravitate toward problems with hard constraints: payment consistency under network failures, keeping
+                the synchronous critical path fast while async workers handle the rest, and getting to ~80% test
+                coverage without slowing delivery. I design for the failure mode, not just the happy path.
               </p>
               <p>
-                Outside engineering, I write about what I learn, contribute to open source when I find a meaningful gap,
-                and try to be the engineer I wish I'd had as a mentor early on.
+                I'm pursuing an M.Sc. in Computer Science at Jahangirnagar University alongside full-time engineering
+                work — and I integrate AI dev tools (Claude, Copilot, Codex) into daily coding, code review, and
+                architecture decisions rather than treating them as novelties.
               </p>
             </div>
 
