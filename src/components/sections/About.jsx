@@ -72,7 +72,7 @@ export default function About() {
 
           {/* Left: photo + narrative */}
           <div>
-            <SectionHeader label="01 · about" title="Who I Am" />
+            <SectionHeader label="07 · about" title="Who I Am" />
 
             {/* Profile photo — visible on mobile/tablet here, desktop shows in Hero */}
             <div className="lg:hidden mb-8">
