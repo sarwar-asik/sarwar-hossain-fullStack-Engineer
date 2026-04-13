@@ -1,26 +1,21 @@
 {
-  "note": "Add your photos to /public/gallery/ and set the src field. Leave src empty to show gradient placeholder.",
   "row1": [
-    {
-      "id": 1,
-      "src": "https://i.ibb.co.com/BKKsjwDh/iftar.jpg",
-      "alt": "Speaking at a local tech meetup in Dhaka",
-      "caption": "Dhaka Dev Meetup, 2025",
-      "tag": "speaking",
-      "colors": ["#0f0c29", "#302b63"]
-    },
-    { "id": 2, "src": "", "alt": "Cox's Bazar beach", "caption": "Cox's Bazar, BD", "tag": "outdoors", "colors": ["#0f2027", "#2c5364"] },
-    { "id": 3, "src": "", "alt": "Home office setup in Dhaka", "caption": "The setup, 2025", "tag": "workspace", "colors": ["#1c1c1c", "#3a3a3a"] },
-    { "id": 4, "src": "", "alt": "Working from a Dhaka coffee shop", "caption": "Remote from Gulshan", "tag": "travel", "colors": ["#2c1810", "#6b3a2a"] },
-    { "id": 5, "src": "", "alt": "Team at StarConnect office", "caption": "StarConnect crew, 2025", "tag": "team", "colors": ["#0a2e1a", "#1f5c35"] },
-    { "id": 6, "src": "", "alt": "Sundarbans mangrove forest", "caption": "Sundarbans, BD", "tag": "outdoors", "colors": ["#1a1832", "#2e3d6b"] }
+    { "id": 1,  "src": "officeTeamMeat.JPG", "alt": "Team gathering at the office",         "caption": "Office team meetup",          "tag": "team",      "colors": ["#0a2e1a", "#1f5c35"] },
+    { "id": 2,  "src": "officeEftar.JPG",    "alt": "Iftar at the office",                  "caption": "Office iftar, 2025",          "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
+    { "id": 3,  "src": "officeDesk.JPG",     "alt": "Office desk setup",                    "caption": "The setup, 2025",             "tag": "workspace", "colors": ["#1c1c1c", "#3a3a3a"] },
+    { "id": 4,  "src": "officeLaptop.jpg",   "alt": "Working on laptop at office",          "caption": "Deep in the code",            "tag": "code",      "colors": ["#0a0a0f", "#18181f"] },
+    { "id": 5,  "src": "officeBack.JPG",     "alt": "Back of the office building",          "caption": "StarConnect HQ",              "tag": "workspace", "colors": ["#0a1929", "#1a3a5c"] },
+    { "id": 6,  "src": "iftarCto.JPG",       "alt": "Iftar with the CTO",                   "caption": "Iftar with the CTO",          "tag": "team",      "colors": ["#1a1832", "#2e3d6b"] },
+    { "id": 7,  "src": "happyNewYear.jpg",   "alt": "Happy New Year celebration",           "caption": "New Year, 2025",              "tag": "life",      "colors": ["#2a1505", "#5c3010"] }
   ],
   "row2": [
-    { "id": 7, "src": "", "alt": "Bangladesh open source community meetup", "caption": "BD OSS Community", "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
-    { "id": 8, "src": "", "alt": "Early morning walk", "caption": "6AM, Hatirjheel", "tag": "fitness", "colors": ["#2a1505", "#5c3010"] },
-    { "id": 9, "src": "", "alt": "Reading technical books on weekends", "caption": "Weekend rituals", "tag": "life", "colors": ["#1a0929", "#3d1357"] },
-    { "id": 10, "src": "", "alt": "Whiteboard system design session at StarConnect", "caption": "Architecture war room", "tag": "work", "colors": ["#0a1929", "#1a3a5c"] },
-    { "id": 11, "src": "", "alt": "Old Dhaka food market", "caption": "Old Dhaka, food tour", "tag": "travel", "colors": ["#1a1f0a", "#3a4a1a"] },
-    { "id": 12, "src": "", "alt": "Late night debugging at Jahangirnagar University", "caption": "3AM and shipping", "tag": "code", "colors": ["#0a0a0f", "#18181f"] }
+    { "id": 8,  "src": "alumnselfie.jpg",    "alt": "Alumni selfie",                        "caption": "Alumni reunion selfie",       "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
+    { "id": 9,  "src": "alumnEftar.jpg",     "alt": "Alumni iftar gathering",               "caption": "Alumni iftar night",          "tag": "community", "colors": ["#0a2e1a", "#1f5c35"] },
+    { "id": 10, "src": "alumne.JPG",         "alt": "Alumni event",                         "caption": "Alumni event, JU",            "tag": "community", "colors": ["#1a0929", "#3d1357"] },
+    { "id": 11, "src": "tanvirVaiMar.jpg",   "alt": "With Tanvir Vai",                      "caption": "With Tanvir Vai",             "tag": "life",      "colors": ["#1a1f0a", "#3a4a1a"] },
+    { "id": 12, "src": "habibVai.jpg",       "alt": "With Habib Vai",                       "caption": "With Habib Vai",              "tag": "life",      "colors": ["#1a1832", "#2e3d6b"] },
+    { "id": 13, "src": "mim.jpg",            "alt": "With Mim",                             "caption": "Good times",                  "tag": "life",      "colors": ["#2a1505", "#5c3010"] },
+    { "id": 14, "src": "teaAdda.jpg",        "alt": "Tea adda session",                     "caption": "Tea & adda",                  "tag": "life",      "colors": ["#2c1810", "#6b3a2a"] },
+    { "id": 15, "src": "idCard.png",         "alt": "Office ID card",                       "caption": "Official, apparently",        "tag": "work",      "colors": ["#0a1929", "#1a3a5c"] }
   ]
 }
