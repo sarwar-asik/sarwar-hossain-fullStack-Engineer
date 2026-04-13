@@ -115,8 +115,8 @@ export default function Hero() {
 
             {/* Name */}
             <h1 className="anim anim-d1 font-bold tracking-tight leading-none text-zinc-100 dark:text-zinc-100 mb-6">
-              <span className="block text-6xl sm:text-7xl lg:text-8xl">{first}</span>
-              <span className="block text-6xl sm:text-7xl lg:text-8xl text-amber-500">{rest.join(" ")}.</span>
+              <span className="block text-5xl sm:text-7xl lg:text-8xl">{first}</span>
+              <span className="block text-5xl sm:text-7xl lg:text-8xl text-amber-500">{rest.join(" ")}.</span>
             </h1>
 
             {/* Role */}
@@ -136,17 +136,18 @@ export default function Hero() {
             </div>
 
             {/* CTAs + social */}
-            <div className="anim anim-d4 flex flex-wrap items-center gap-4">
-              <Button href="#projects" size="lg">
-                View Projects
-                <Icon name="arrowRight" className="w-4 h-4" />
-              </Button>
-              <Button href="#contact" variant="outline" size="lg">
-                <Icon name="mail" className="w-4 h-4" />
-                Get in Touch
-              </Button>
-
-              <div className="flex items-center gap-1 ml-auto">
+            <div className="anim anim-d4 space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button href="#projects" size="lg">
+                  View Projects
+                  <Icon name="arrowRight" className="w-4 h-4" />
+                </Button>
+                <Button href="#contact" variant="outline" size="lg">
+                  <Icon name="mail" className="w-4 h-4" />
+                  Get in Touch
+                </Button>
+              </div>
+              <div className="flex items-center gap-1">
                 {social.map((s) => (
                   <a
                     key={s.name}

@@ -238,7 +238,7 @@ function CompanyCard({ company }) {
       <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: color }} aria-hidden="true" />
 
       {/* ── Company header ─────────────────────────────── */}
-      <div className="flex items-center gap-4 px-6 pt-5 pb-4 border-b ml-1" style={{ borderColor: `${color}15` }}>
+      <div className="flex items-center gap-3 px-4 sm:px-6 pt-4 sm:pt-5 pb-4 border-b ml-1" style={{ borderColor: `${color}15` }}>
         {/* Monogram badge */}
         <div className="w-11 h-11 rounded-xl flex items-center justify-center font-mono text-sm font-bold shrink-0 select-none" style={{ backgroundColor: `${color}18`, color }}>
           {monogram}
@@ -298,7 +298,7 @@ function CompanyCard({ company }) {
       </div>
 
       {/* ── Timeline body ──────────────────────────────── */}
-      <div className="px-6 py-5 ml-1 space-y-0">
+      <div className="px-4 sm:px-6 py-4 sm:py-5 ml-1 space-y-0">
         {roles.map((role, i) => {
           const isTop = i === 0;
           const showPromotion = hasPromotion && isTop;
@@ -430,7 +430,7 @@ export default function Experience() {
   const companies = groupByCompany(experience);
 
   return (
-    <section id="experience" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="experience" className="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           label="02 · career"

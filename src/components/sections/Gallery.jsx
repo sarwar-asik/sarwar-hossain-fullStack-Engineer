@@ -82,7 +82,7 @@ export default function Gallery() {
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               Beyond the Terminal
             </h2>
             <p className="mt-2 text-sm text-zinc-500 max-w-sm leading-relaxed">

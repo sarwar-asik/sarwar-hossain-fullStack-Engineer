@@ -15,7 +15,7 @@ export default function Skills() {
           {skills.map(group => (
             <div
               key={group.category}
-              className="group grid md:grid-cols-[160px_1fr] gap-4 py-5 items-baseline hover:bg-zinc-900/30 -mx-4 px-4 transition-colors rounded-lg"
+              className="group grid md:grid-cols-[120px_1fr] lg:grid-cols-[160px_1fr] gap-2 md:gap-4 py-5 items-baseline hover:bg-zinc-900/30 -mx-2 px-2 sm:-mx-4 sm:px-4 transition-colors rounded-lg"
             >
               {/* Category */}
               <span className="font-mono text-xs text-amber-500/80 shrink-0">
