@@ -22,6 +22,17 @@
     <meta name="twitter:description" content="Node.js · TypeScript · NestJS · RabbitMQ · Redis · Microservices" />
     <meta name="twitter:creator" content="@sarwarasik" />
 
+    <!-- Theme: apply before first paint to prevent flash -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        // Default to dark when no preference is stored
+        if (saved !== 'light') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
     <!-- Performance: preconnect to font origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
