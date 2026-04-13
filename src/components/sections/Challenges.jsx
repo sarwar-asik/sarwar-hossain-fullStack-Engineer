@@ -276,7 +276,7 @@ export default function Challenges() {
             </span>
           </div>
 
-          <h2 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Battle-Tested Solutions
           </h2>
           <p className="mt-3 text-zinc-500 dark:text-zinc-500 max-w-xl leading-relaxed text-sm">
@@ -285,12 +285,12 @@ export default function Challenges() {
           </p>
 
           {/* Live status strip */}
-          <div className="mt-5 inline-flex items-center gap-4 font-mono text-xs border border-zinc-200 dark:border-zinc-800 rounded-md px-4 py-2 bg-white dark:bg-zinc-900/60">
+          <div className="mt-5 inline-flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-xs border border-zinc-200 dark:border-zinc-800 rounded-md px-4 py-2 bg-white dark:bg-zinc-900/60">
             <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               All systems operational
             </span>
-            <span className="text-zinc-300 dark:text-zinc-800" aria-hidden="true">|</span>
+            <span className="hidden sm:inline text-zinc-300 dark:text-zinc-800" aria-hidden="true">|</span>
             <span className="text-zinc-400 dark:text-zinc-600">MTTR avg: 3.4 hrs</span>
           </div>
         </div>

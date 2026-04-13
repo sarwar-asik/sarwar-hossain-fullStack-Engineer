@@ -115,7 +115,7 @@ function ContactCard({ method }) {
 
 export default function Contact() {
   const qrTarget = WHATSAPP_URL
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrTarget)}&color=f59e0b&bgcolor=18181b&margin=10&format=svg`
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrTarget)}&color=ffffff&bgcolor=18181b&margin=10&format=svg`
 
   return (
     <section id="contact" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
@@ -127,7 +127,7 @@ export default function Contact() {
             <span className="font-mono text-xs text-amber-500">// 08 · contact</span>
             <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
           </div>
-          <h2 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Reach Me Directly
           </h2>
           <p className="mt-3 text-zinc-500 dark:text-zinc-500 max-w-lg leading-relaxed text-sm">
@@ -137,9 +137,12 @@ export default function Contact() {
 
           {/* Availability badge */}
           {profile.available && (
-            <div className="mt-5 inline-flex items-center gap-2 font-mono text-xs text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 rounded-md px-3 py-1.5 bg-emerald-500/5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              open_to_work = true · response within 24 hrs
+            <div className="mt-5 inline-flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 rounded-md px-3 py-1.5 bg-emerald-500/5 max-w-full">
+              <span className="flex items-center gap-2 whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                open_to_work = true
+              </span>
+              <span className="whitespace-nowrap text-emerald-700 dark:text-emerald-600">· response within 24 hrs</span>
             </div>
           )}
         </div>

@@ -68,7 +68,7 @@ export default function About() {
   return (
     <section id="about" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid lg:grid-cols-[1fr_1fr] gap-20 items-start">
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-20 items-start">
 
           {/* Left: photo + narrative */}
           <div>

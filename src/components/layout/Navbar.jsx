@@ -58,7 +58,7 @@ export default function Navbar({ theme, onThemeToggle }) {
           </a>
 
           {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-0.5">
+          <ul className="hidden lg:flex items-center gap-0.5">
             {NAV_LINKS.map(link => (
               <li key={link.href}>
                 <a
@@ -89,7 +89,7 @@ export default function Navbar({ theme, onThemeToggle }) {
 
             <a
               href={`mailto:${profile.email}`}
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-amber-500/30 text-amber-500 text-xs font-mono hover:bg-amber-500/10 transition-colors"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-amber-500/30 text-amber-500 text-xs font-mono hover:bg-amber-500/10 transition-colors"
             >
               Hire Me
             </a>
@@ -97,7 +97,7 @@ export default function Navbar({ theme, onThemeToggle }) {
             <button
               onClick={() => setMenuOpen(o => !o)}
               aria-label="Toggle menu"
-              className="md:hidden w-8 h-8 flex items-center justify-center rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+              className="lg:hidden w-8 h-8 flex items-center justify-center rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
               <Icon name={menuOpen ? 'close' : 'menu'} className="w-4 h-4" />
             </button>
@@ -108,14 +108,14 @@ export default function Navbar({ theme, onThemeToggle }) {
       {/* Mobile overlay */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-40 md:hidden bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-40 lg:hidden bg-black/60 backdrop-blur-sm"
           onClick={() => setMenuOpen(false)}
         />
       )}
 
       {/* Mobile drawer */}
       <div className={`
-        fixed top-0 right-0 bottom-0 z-50 w-64 md:hidden
+        fixed top-0 right-0 bottom-0 z-50 w-64 lg:hidden
         bg-zinc-50 dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800
         transition-transform duration-300
         ${menuOpen ? 'translate-x-0' : 'translate-x-full'}
