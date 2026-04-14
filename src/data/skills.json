@@ -17,11 +17,11 @@
   },
   {
     "category": "Testing",
-    "items": ["Jest", "SuperTest", "TDD", "Unit / Integration / E2E"]
+    "items": ["Jest", "SuperTest", "TDD", "Unit / Integration / E2E", "SOLID", "DRY", "Clean Architecture"]
   },
   {
     "category": "Frontend",
-    "items": ["React.js", "Next.js", "Redux", "Ant Design", "Agora SDK"]
+    "items": ["React.js", "Next.js", "Redux", "Ant Design", "Agora (video/whiteboard SDK)", "HTML5", "CSS3"]
   },
   {
     "category": "AI Dev Tools",
