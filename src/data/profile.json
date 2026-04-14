@@ -1,5 +1,5 @@
 {
-  "photo": "https://i.ibb.co.com/WvwMmCw1/profile.jpg",
+  "photo": "/profile.png",
   "name": "Sarwar Hossain",
   "initials": "Sarwar",
   "role": "Backend Engineer",
@@ -12,7 +12,7 @@
   "social": [
     { "name": "GitHub", "url": "https://github.com/sarwar-asik", "icon": "github" },
     { "name": "LinkedIn", "url": "https://linkedin.com/in/sarwar-asik", "icon": "linkedin" },
-    { "name": "Twitter", "url": "https://twitter.com/sarwarasik", "icon": "twitter" }
+    { "name": "Twitter", "url": "https://x.com/sarwar_asik", "icon": "twitter" }
   ],
   "stats": [
     { "label": "Microservices Built", "value": "10+" },
