@@ -1,21 +1,21 @@
 {
   "row1": [
-    { "id": 1,  "src": "officeTeamMeat.JPG", "alt": "Team gathering at the office",         "caption": "Office team meetup",          "tag": "team",      "colors": ["#0a2e1a", "#1f5c35"] },
-    { "id": 2,  "src": "officeEftar.JPG",    "alt": "Iftar at the office",                  "caption": "Office iftar, 2025",          "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
-    { "id": 3,  "src": "officeDesk.JPG",     "alt": "Office desk setup",                    "caption": "The setup, 2025",             "tag": "workspace", "colors": ["#1c1c1c", "#3a3a3a"] },
-    { "id": 4,  "src": "officeLaptop.jpg",   "alt": "Working on laptop at office",          "caption": "Deep in the code",            "tag": "code",      "colors": ["#0a0a0f", "#18181f"] },
-    { "id": 5,  "src": "officeBack.JPG",     "alt": "Back of the office building",          "caption": "StarConnect HQ",              "tag": "workspace", "colors": ["#0a1929", "#1a3a5c"] },
-    { "id": 6,  "src": "iftarCto.JPG",       "alt": "Iftar with the CTO",                   "caption": "Iftar with the CTO",          "tag": "team",      "colors": ["#1a1832", "#2e3d6b"] },
-    { "id": 7,  "src": "happyNewYear.jpg",   "alt": "Happy New Year celebration",           "caption": "New Year, 2025",              "tag": "life",      "colors": ["#2a1505", "#5c3010"] }
+    { "id": 1, "src": "officeTeamMeat.JPG", "alt": "Team gathering at the office", "caption": "Office team meetup", "tag": "team", "colors": ["#0a2e1a", "#1f5c35"] },
+    { "id": 2, "src": "officeEftar.JPG", "alt": "Iftar at the office", "caption": "Office iftar, 2025", "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
+    { "id": 3, "src": "officeDesk.JPG", "alt": "Office desk setup", "caption": "The setup, 2025", "tag": "workspace", "colors": ["#1c1c1c", "#3a3a3a"] },
+    { "id": 4, "src": "officeLaptop.jpg", "alt": "Working on laptop at office", "caption": "Deep in the code", "tag": "code", "colors": ["#0a0a0f", "#18181f"] },
+    { "id": 5, "src": "officeBack.JPG", "alt": "Back of the office building", "caption": "StarConnect HQ", "tag": "workspace", "colors": ["#0a1929", "#1a3a5c"] },
+    { "id": 6, "src": "iftarCto.JPG", "alt": "Iftar with the CTO", "caption": "Iftar with the CTO", "tag": "team", "colors": ["#1a1832", "#2e3d6b"] },
+    { "id": 7, "src": "happyNewYear.jpg", "alt": "Happy New Year celebration", "caption": "New Year, 2025", "tag": "life", "colors": ["#2a1505", "#5c3010"] }
   ],
   "row2": [
-    { "id": 8,  "src": "alumnselfie.jpg",    "alt": "Alumni selfie",                        "caption": "Alumni reunion selfie",       "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
-    { "id": 9,  "src": "alumnEftar.jpg",     "alt": "Alumni iftar gathering",               "caption": "Alumni iftar night",          "tag": "community", "colors": ["#0a2e1a", "#1f5c35"] },
-    { "id": 10, "src": "alumne.JPG",         "alt": "Alumni event",                         "caption": "Alumni event, JU",            "tag": "community", "colors": ["#1a0929", "#3d1357"] },
-    { "id": 11, "src": "tanvirVaiMar.jpg",   "alt": "With Tanvir Vai",                      "caption": "With Tanvir Vai",             "tag": "life",      "colors": ["#1a1f0a", "#3a4a1a"] },
-    { "id": 12, "src": "habibVai.jpg",       "alt": "With Habib Vai",                       "caption": "With Habib Vai",              "tag": "life",      "colors": ["#1a1832", "#2e3d6b"] },
-    { "id": 13, "src": "mim.jpg",            "alt": "With Mim",                             "caption": "Good times",                  "tag": "life",      "colors": ["#2a1505", "#5c3010"] },
-    { "id": 14, "src": "teaAdda.jpg",        "alt": "Tea adda session",                     "caption": "Tea & adda",                  "tag": "life",      "colors": ["#2c1810", "#6b3a2a"] },
-    { "id": 15, "src": "idCard.png",         "alt": "Office ID card",                       "caption": "Official, apparently",        "tag": "work",      "colors": ["#0a1929", "#1a3a5c"] }
+    { "id": 8, "src": "alumnselfie.jpg", "alt": "Alumni selfie", "caption": "Alumni reunion selfie", "tag": "community", "colors": ["#0d2b2b", "#1a5c5c"] },
+    { "id": 9, "src": "alumnEftar.jpg", "alt": "Alumni iftar gathering", "caption": "Alumni iftar night", "tag": "community", "colors": ["#0a2e1a", "#1f5c35"] },
+    { "id": 10, "src": "alumne.JPG", "alt": "Alumni event,PH", "caption": "Alumni event, PH", "tag": "community", "colors": ["#1a0929", "#3d1357"] },
+    { "id": 11, "src": "tanvirVaiMar.jpg", "alt": "Colleague Marriage Gift", "caption": "Colleague Marriage Gift", "tag": "life", "colors": ["#1a1f0a", "#3a4a1a"] },
+    { "id": 12, "src": "habibVai.jpg", "alt": "Time with mentor", "caption": "Time with mentor", "tag": "life", "colors": ["#1a1832", "#2e3d6b"] },
+    { "id": 13, "src": "mim.jpg", "alt": "With Celebrity", "caption": "Good times", "tag": "life", "colors": ["#2a1505", "#5c3010"] },
+    { "id": 14, "src": "teaAdda.jpg", "alt": "Tea adda session", "caption": "Tea & adda", "tag": "life", "colors": ["#2c1810", "#6b3a2a"] },
+    { "id": 15, "src": "idCard.png", "alt": "Office ID card", "caption": "Official, apparently", "tag": "work", "colors": ["#0a1929", "#1a3a5c"] }
   ]
 }

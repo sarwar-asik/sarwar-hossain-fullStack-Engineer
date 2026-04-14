@@ -2,7 +2,7 @@
   "photo": "/profile.png",
   "name": "Sarwar Hossain",
   "initials": "Sarwar",
-  "role": "Backend Engineer",
+  "role": "Software Engineer [Backend]",
   "tagline": "Building distributed systems that scale.",
   "bio": "Backend engineer specializing in Node.js microservices, real-time systems, and high-traffic APIs. I design for failure modes, reach ~80% test coverage, and ship code the next engineer can reason about.",
   "location": "Dhaka, Bangladesh",
@@ -17,7 +17,7 @@
   "stats": [
     { "label": "Microservices Built", "value": "10+" },
     { "label": "Test Coverage", "value": "~80%" },
-    { "label": "Production Apps", "value": "6+" },
+    { "label": "Production Apps", "value": "10+" },
     { "label": "Payment Gateways", "value": "5+" }
   ]
 }
