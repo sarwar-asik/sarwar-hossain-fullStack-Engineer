@@ -134,6 +134,7 @@ function RoleNode({ role, color, isTop, showPromotion, promotedFrom }) {
             ) : (
               <button
                 onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
                 className="font-mono text-[10px] text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors"
               >
                 {expanded ? "▾ collapse" : "▸ expand"}

@@ -26,20 +26,34 @@ const TAG_COLORS = {
 // ── Modal ─────────────────────────────────────────────────
 function PhotoModal({ photo, onClose, onPrev, onNext, hasPrev, hasNext }) {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const closeRef = useRef(null);
 
-  // Body scroll lock
+  // Body scroll lock + auto-focus close button
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  // Keyboard navigation
+  // Keyboard navigation + focus trap
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape")      onClose();
       if (e.key === "ArrowLeft"  && hasPrev) onPrev();
       if (e.key === "ArrowRight" && hasNext) onNext();
+      // Basic focus trap: keep Tab inside modal
+      if (e.key === "Tab") {
+        const modal = document.getElementById("photo-modal");
+        if (!modal) return;
+        const focusable = modal.querySelectorAll('button,[tabindex]:not([tabindex="-1"])');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -49,11 +63,17 @@ function PhotoModal({ photo, onClose, onPrev, onNext, hasPrev, hasNext }) {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-zinc-950/90 backdrop-blur-sm"
       onClick={onClose}
+      aria-hidden="true"
     >
       <div
+        id="photo-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={photo.caption}
         className="relative w-full max-w-3xl flex flex-col rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl"
         style={{ animation: "modal-in 0.22s ease forwards", maxHeight: "90dvh" }}
         onClick={e => e.stopPropagation()}
+        aria-hidden="false"
       >
         {/* Image area */}
         <div
@@ -75,11 +95,12 @@ function PhotoModal({ photo, onClose, onPrev, onNext, hasPrev, hasNext }) {
             <div className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-transparent via-white/10 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
           )}
 
-          {/* Close button */}
+          {/* Close button — auto-focused on mount */}
           <button
+            ref={closeRef}
             onClick={onClose}
-            aria-label="Close"
-            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-950/60 text-zinc-300 hover:text-white hover:bg-zinc-950/80 transition-colors text-sm font-bold"
+            aria-label="Close photo preview"
+            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-950/60 text-zinc-300 hover:text-white hover:bg-zinc-950/80 transition-colors text-sm font-bold focus-visible:outline-2 focus-visible:outline-amber-500"
           >
             ✕
           </button>
@@ -132,7 +153,7 @@ function PhotoCard({ photo, tall = false, onOpen }) {
       onClick={() => onOpen(photo.id)}
       role="button"
       tabIndex={0}
-      onKeyDown={e => e.key === "Enter" && onOpen(photo.id)}
+      onKeyDown={e => (e.key === "Enter" || e.key === " ") && onOpen(photo.id)}
       aria-label={`View: ${photo.caption}`}
     >
       {/* Gradient placeholder */}

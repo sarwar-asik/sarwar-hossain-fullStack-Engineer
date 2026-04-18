@@ -38,6 +38,14 @@ export default function Navbar({ theme, onThemeToggle }) {
 
   return (
     <>
+      {/* Skip to main content — visible only on focus */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-md focus:bg-amber-500 focus:text-zinc-950 focus:font-medium focus:text-sm"
+      >
+        Skip to main content
+      </a>
+
       <header
         className={`
           fixed top-0 inset-x-0 z-50 transition-all duration-300
@@ -75,6 +83,7 @@ export default function Navbar({ theme, onThemeToggle }) {
             <button
               onClick={onThemeToggle}
               aria-label="Toggle theme"
+              aria-pressed={theme === "dark"}
               className="w-8 h-8 flex items-center justify-center rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
               <Icon name={theme === "dark" ? "sun" : "moon"} className="w-3.5 h-3.5" />
@@ -89,7 +98,9 @@ export default function Navbar({ theme, onThemeToggle }) {
 
             <button
               onClick={() => setMenuOpen((o) => !o)}
-              aria-label="Toggle menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-drawer"
               className="lg:hidden w-8 h-8 flex items-center justify-center rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
               <Icon name={menuOpen ? "close" : "menu"} className="w-4 h-4" />
@@ -103,6 +114,10 @@ export default function Navbar({ theme, onThemeToggle }) {
 
       {/* Mobile drawer */}
       <div
+        id="mobile-drawer"
+        role="dialog"
+        aria-label="Navigation menu"
+        aria-modal="true"
         className={`
         fixed top-0 right-0 bottom-0 z-50 w-64 lg:hidden
         bg-zinc-50 dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800
@@ -112,7 +127,7 @@ export default function Navbar({ theme, onThemeToggle }) {
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <span className="font-mono text-xs text-amber-500">{profile.initials}</span>
-          <button onClick={() => setMenuOpen(false)} className="text-zinc-500 hover:text-zinc-200">
+          <button onClick={() => setMenuOpen(false)} aria-label="Close menu" className="text-zinc-500 hover:text-zinc-200">
             <Icon name="close" className="w-4 h-4" />
           </button>
         </div>

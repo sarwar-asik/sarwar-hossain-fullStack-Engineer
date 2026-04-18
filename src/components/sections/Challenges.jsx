@@ -314,6 +314,7 @@ export default function Challenges() {
           <div className="mt-8 text-center">
             <button
               onClick={() => setShowAll(v => !v)}
+              aria-expanded={showAll}
               className="inline-flex items-center gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-500 hover:text-amber-500 dark:hover:text-amber-400 border border-zinc-300 dark:border-zinc-800 hover:border-amber-500/40 px-5 py-2.5 rounded-lg transition-all duration-200"
             >
               <Icon name={showAll ? 'chevronUp' : 'chevronDown'} className="w-3.5 h-3.5" />

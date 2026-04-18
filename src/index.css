@@ -41,6 +41,13 @@ body { margin: 0; overflow-x: hidden; }
   from { transform: translateX(-100%); }
   to   { transform: translateX(400%); }
 }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 @keyframes gallery-fade-in {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
