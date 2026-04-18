@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 import gallery from "../../data/gallery.json";
 
 // Lazy loaders — images are NOT downloaded until explicitly called
@@ -22,28 +23,129 @@ const TAG_COLORS = {
   code:      "text-amber-500",
 };
 
-function PhotoCard({ photo, tall = false }) {
+// ── Modal ─────────────────────────────────────────────────
+function PhotoModal({ photo, onClose, onPrev, onNext, hasPrev, hasNext }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  // Body scroll lock
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape")      onClose();
+      if (e.key === "ArrowLeft"  && hasPrev) onPrev();
+      if (e.key === "ArrowRight" && hasNext) onNext();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, onPrev, onNext, hasPrev, hasNext]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-zinc-950/90 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl flex flex-col rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl"
+        style={{ animation: "modal-in 0.22s ease forwards", maxHeight: "90dvh" }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Image area */}
+        <div
+          className="relative flex items-center justify-center overflow-hidden"
+          style={{ background: `linear-gradient(145deg, ${photo.colors[0]}, ${photo.colors[1]})`, minHeight: 240 }}
+        >
+          {photo.resolvedSrc && (
+            <img
+              src={photo.resolvedSrc}
+              alt={photo.alt}
+              className={`w-full object-contain transition-opacity duration-500 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+              style={{ maxHeight: "70dvh" }}
+              onLoad={() => setImgLoaded(true)}
+            />
+          )}
+
+          {/* Shimmer while loading */}
+          {photo.resolvedSrc && !imgLoaded && (
+            <div className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-transparent via-white/10 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
+          )}
+
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-950/60 text-zinc-300 hover:text-white hover:bg-zinc-950/80 transition-colors text-sm font-bold"
+          >
+            ✕
+          </button>
+
+          {/* Prev arrow */}
+          {hasPrev && (
+            <button
+              onClick={onPrev}
+              aria-label="Previous photo"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-zinc-950/60 text-zinc-300 hover:text-white hover:bg-zinc-950/80 transition-colors text-lg"
+            >
+              ‹
+            </button>
+          )}
+
+          {/* Next arrow */}
+          {hasNext && (
+            <button
+              onClick={onNext}
+              aria-label="Next photo"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-zinc-950/60 text-zinc-300 hover:text-white hover:bg-zinc-950/80 transition-colors text-lg"
+            >
+              ›
+            </button>
+          )}
+        </div>
+
+        {/* Caption bar */}
+        <div className="px-5 py-4 flex items-center justify-between gap-4 bg-zinc-900">
+          <p className="text-sm font-medium text-zinc-100 truncate">{photo.caption}</p>
+          <span className={`font-mono text-[11px] shrink-0 ${TAG_COLORS[photo.tag] ?? "text-zinc-500"}`}>
+            #{photo.tag}
+          </span>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+// ── Photo Card ────────────────────────────────────────────
+function PhotoCard({ photo, tall = false, onOpen }) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const height = tall ? "h-52" : "h-40";
   const hasSrc = Boolean(photo.resolvedSrc);
 
   return (
-    <div className={`group relative shrink-0 w-56 ${height} rounded-xl overflow-hidden cursor-pointer`}>
-
-      {/* Gradient placeholder — visible instantly, fades when image settles */}
+    <div
+      className={`group relative shrink-0 w-56 ${height} rounded-xl overflow-hidden cursor-pointer`}
+      onClick={() => onOpen(photo.id)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => e.key === "Enter" && onOpen(photo.id)}
+      aria-label={`View: ${photo.caption}`}
+    >
+      {/* Gradient placeholder */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 ${imgLoaded ? "opacity-0" : "opacity-100"}`}
         style={{ background: `linear-gradient(145deg, ${photo.colors[0]}, ${photo.colors[1]})` }}
       >
-        {/* Shimmer sweep — only while a real image is in flight */}
         {hasSrc && !imgLoaded && (
-          <div
-            className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-transparent via-white/10 to-transparent animate-[shimmer_2s_ease-in-out_infinite]"
-          />
+          <div className="absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-transparent via-white/10 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
         )}
       </div>
 
-      {/* Real image — crossfades in once loaded */}
+      {/* Real image */}
       {hasSrc && (
         <img
           src={photo.resolvedSrc}
@@ -53,7 +155,7 @@ function PhotoCard({ photo, tall = false }) {
         />
       )}
 
-      {/* Ambient grain overlay */}
+      {/* Grain overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
@@ -64,7 +166,7 @@ function PhotoCard({ photo, tall = false }) {
         aria-hidden="true"
       />
 
-      {/* Hover tint + caption slide-up */}
+      {/* Hover tint + caption */}
       <div className="absolute inset-0 bg-zinc-950/0 group-hover:bg-zinc-950/60 transition-all duration-300" aria-hidden="true" />
       <div className="absolute bottom-0 inset-x-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out p-3 bg-linear-to-t from-zinc-950/95 to-transparent">
         <p className="text-xs font-medium text-zinc-100 leading-snug mb-0.5 truncate">{photo.caption}</p>
@@ -74,7 +176,8 @@ function PhotoCard({ photo, tall = false }) {
   );
 }
 
-function ScrollRow({ items, direction = "left", tall = false, animate = false }) {
+// ── Scroll Row ────────────────────────────────────────────
+function ScrollRow({ items, direction = "left", tall = false, animate = false, onOpen }) {
   const doubled = [...items, ...items];
   const animDef = direction === "left"
     ? "scroll-left 40s linear infinite"
@@ -84,39 +187,55 @@ function ScrollRow({ items, direction = "left", tall = false, animate = false })
     <div className="overflow-hidden group/row">
       <div
         className={`flex gap-3 w-max group-hover/row:[animation-play-state:paused] will-change-transform transition-opacity duration-500 ${animate ? "opacity-100" : "opacity-0"}`}
-        style={animate ? { animation: `${animDef}` } : undefined}
+        style={animate ? { animation: animDef } : undefined}
       >
         {doubled.map((photo, i) => (
-          <PhotoCard key={`${photo.id}-${i}`} photo={photo} tall={tall} />
+          <PhotoCard key={`${photo.id}-${i}`} photo={photo} tall={tall} onOpen={onOpen} />
         ))}
       </div>
     </div>
   );
 }
 
+// ── Gallery Section ───────────────────────────────────────
 export default function Gallery() {
-  const sectionRef = useRef(null);
-  const loadingRef = useRef(false);
+  const sectionRef  = useRef(null);
+  const loadingRef  = useRef(false);
+
   const [resolvedPhotos, setResolvedPhotos] = useState({
     row1: gallery.row1,
     row2: gallery.row2,
   });
-  const [animate, setAnimate] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [animate,  setAnimate]  = useState(false);
+  const [visible,  setVisible]  = useState(false);
+  const [activeId, setActiveId] = useState(null);
+
+  // Flat unique list for modal navigation
+  const allPhotos = useMemo(
+    () => [...resolvedPhotos.row1, ...resolvedPhotos.row2],
+    [resolvedPhotos]
+  );
+  const activeIdx = allPhotos.findIndex(p => p.id === activeId);
+  const activePhoto = activeIdx !== -1 ? allPhotos[activeIdx] : null;
+
+  const openModal  = useCallback((id) => setActiveId(id), []);
+  const closeModal = useCallback(() => setActiveId(null), []);
+  const prevPhoto  = useCallback(() => setActiveId(allPhotos[activeIdx - 1]?.id), [allPhotos, activeIdx]);
+  const nextPhoto  = useCallback(() => setActiveId(allPhotos[activeIdx + 1]?.id), [allPhotos, activeIdx]);
 
   const startLoading = useCallback(async () => {
     if (loadingRef.current) return;
     loadingRef.current = true;
 
-    const allPhotos = [
+    const allRaw = [
       ...gallery.row1.map(p => ({ ...p, row: "row1" })),
       ...gallery.row2.map(p => ({ ...p, row: "row2" })),
     ].filter(p => p.src);
 
     let settled = 0;
-    const threshold = Math.min(3, allPhotos.length);
+    const threshold = Math.min(3, allRaw.length);
 
-    allPhotos.forEach(photo => {
+    allRaw.forEach(photo => {
       const loader = getLoader(photo.src);
       if (!loader) return;
 
@@ -134,7 +253,6 @@ export default function Gallery() {
             return { ...prev, [row]: newRow };
           });
 
-          // Start scrolling only after a handful of images are ready
           if (settled === threshold) setAnimate(true);
         })
         .catch(() => {});
@@ -160,39 +278,54 @@ export default function Gallery() {
   }, [startLoading]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="gallery"
-      className="py-24 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 overflow-hidden"
-    >
-      {/* Header */}
-      <div
-        className="max-w-6xl mx-auto px-6 mb-12"
-        style={visible ? { animation: "gallery-fade-in 0.6s ease forwards" } : { opacity: 0 }}
+    <>
+      <section
+        ref={sectionRef}
+        id="gallery"
+        className="py-24 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 overflow-hidden"
       >
-        <div className="flex items-center gap-4 mb-5">
-          <span className="font-mono text-xs text-amber-500">// 06 · life</span>
-          <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Beyond the Terminal
-            </h2>
-            <p className="mt-2 text-sm text-zinc-500 max-w-sm leading-relaxed">
-              Conference stages, mountain trails, and everything in between.
-            </p>
+        {/* Header */}
+        <div
+          className="max-w-6xl mx-auto px-6 mb-12"
+          style={visible ? { animation: "gallery-fade-in 0.6s ease forwards" } : { opacity: 0 }}
+        >
+          <div className="flex items-center gap-4 mb-5">
+            <span className="font-mono text-xs text-amber-500">// 06 · life</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
           </div>
-          <p className="font-mono text-xs text-zinc-700 shrink-0 pb-1">hover to pause</p>
-        </div>
-      </div>
 
-      {/* Film strip rows */}
-      <div className="space-y-3">
-        <ScrollRow items={resolvedPhotos.row1} direction="left"  tall={false} animate={animate} />
-        <ScrollRow items={resolvedPhotos.row2} direction="right" tall={true}  animate={animate} />
-      </div>
-    </section>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Beyond the Terminal
+              </h2>
+              <p className="mt-2 text-sm text-zinc-500 max-w-sm leading-relaxed">
+                Conference stages, mountain trails, and everything in between.
+              </p>
+            </div>
+            <p className="font-mono text-xs text-zinc-700 shrink-0 pb-1">click to open · hover to pause</p>
+          </div>
+        </div>
+
+        {/* Film strip rows */}
+        <div className="space-y-3">
+          <ScrollRow items={resolvedPhotos.row1} direction="left"  tall={false} animate={animate} onOpen={openModal} />
+          <ScrollRow items={resolvedPhotos.row2} direction="right" tall={true}  animate={animate} onOpen={openModal} />
+        </div>
+      </section>
+
+      {/* Modal (portal) */}
+      {activePhoto && (
+        <PhotoModal
+          key={activePhoto.id}
+          photo={activePhoto}
+          onClose={closeModal}
+          onPrev={prevPhoto}
+          onNext={nextPhoto}
+          hasPrev={activeIdx > 0}
+          hasNext={activeIdx < allPhotos.length - 1}
+        />
+      )}
+    </>
   );
 }
