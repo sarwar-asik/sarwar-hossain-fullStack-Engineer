@@ -1,24 +1,28 @@
+import { lazy, Suspense } from "react";
 import Hero from "../components/sections/Hero";
-import Challenges from "../components/sections/Challenges";
-import Experience from "../components/sections/Experience";
-import Projects from "../components/sections/Projects";
-import Skills from "../components/sections/Skills";
-import Articles from "../components/sections/Articles";
-import Gallery from "../components/sections/Gallery";
-import Contact from "../components/sections/Contact";
+
+// Below-fold sections loaded only when needed — reduces initial JS parse/eval
+const Challenges = lazy(() => import("../components/sections/Challenges"));
+const Experience  = lazy(() => import("../components/sections/Experience"));
+const Projects    = lazy(() => import("../components/sections/Projects"));
+const Skills      = lazy(() => import("../components/sections/Skills"));
+const Articles    = lazy(() => import("../components/sections/Articles"));
+const Gallery     = lazy(() => import("../components/sections/Gallery"));
+const Contact     = lazy(() => import("../components/sections/Contact"));
 
 export default function Home() {
   return (
     <main id="main-content">
       <Hero />
-      <Challenges />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Articles />
-      <Gallery />
-      {/* <About /> */}
-      <Contact />
+      <Suspense fallback={null}>
+        <Challenges />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Articles />
+        <Gallery />
+        <Contact />
+      </Suspense>
     </main>
   );
 }
