@@ -1,5 +1,27 @@
 [
   {
+    "id": "INC-006",
+    "incidentId": "INC-2026-0320",
+    "severity": "P2",
+    "status": "RESOLVED",
+    "title": "Offset Pagination Wall — Expert Comment Feed Unusable at Depth",
+    "summary": "StarConnect's expert post comment API used LIMIT/OFFSET. When a live-session post crossed 8,000 comments, page-50+ requests took 11 seconds — PostgreSQL was scanning and discarding 20,000+ rows per request. Mobile users abandoned deep threads; engagement on high-volume posts collapsed.",
+    "rootCause": "OFFSET N forces PostgreSQL to materialize and discard the first N rows on every query — cost grows linearly with page depth. No composite index on (postId, createdAt, id), so each paginated request triggered a near-full sequential scan of the comments table. Concurrent inserts also caused rows to skip or duplicate across pages mid-scroll.",
+    "resolution": "Replaced OFFSET with keyset pagination using a composite cursor of (createdAt, id) encoded as an opaque base64 token. Added compound index on (postId, createdAt DESC, id DESC). All page depths now execute in O(log n). Cursor is stable under concurrent inserts — no rows skipped or duplicated during live comment activity. Old numeric ?page= params deprecated in favour of ?cursor= to hide internal DB structure.",
+    "timeToResolve": "Planned — 1-day sprint",
+    "date": "Apr 2026",
+    "impactedUsers": "Users on high-volume expert posts",
+    "metrics": [
+      { "label": "Query Time (page 50+)", "before": "11s",              "after": "18ms" },
+      { "label": "Rows Scanned/Request",  "before": "20,000+",          "after": "≤ 20" },
+      { "label": "Pagination Stability",  "before": "Skips on insert",  "after": "Cursor-stable" }
+    ],
+    "tech": ["NestJS", "PostgreSQL", "TypeScript", "class-validator", "Swagger"],
+    "featured": true,
+    "visual": "query",
+    "gradient": ["#059669", "#047857"]
+  },
+  {
     "id": "INC-001",
     "incidentId": "INC-2025-0412",
     "severity": "P0",
