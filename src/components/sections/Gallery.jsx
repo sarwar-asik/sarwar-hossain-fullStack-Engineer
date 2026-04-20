@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { createPortal } from "react-dom";
 import gallery from "../../data/gallery.json";
 
@@ -198,16 +198,16 @@ function PhotoCard({ photo, tall = false, onOpen }) {
 }
 
 // ── Scroll Row ────────────────────────────────────────────
-function ScrollRow({ items, direction = "left", tall = false, animate = false, onOpen }) {
-  const doubled = [...items, ...items];
+const ScrollRow = memo(function ScrollRow({ items, direction = "left", tall = false, animate = false, onOpen }) {
+  const doubled = useMemo(() => [...items, ...items], [items]);
   const animDef = direction === "left"
     ? "scroll-left 40s linear infinite"
     : "scroll-right 36s linear infinite";
 
   return (
-    <div className="overflow-hidden group/row">
+    <div className={`overflow-hidden group/row transition-opacity duration-500 ${animate ? "opacity-100" : "opacity-0"}`}>
       <div
-        className={`flex gap-3 w-max group-hover/row:[animation-play-state:paused] will-change-transform transition-opacity duration-500 ${animate ? "opacity-100" : "opacity-0"}`}
+        className="flex gap-3 w-max group-hover/row:[animation-play-state:paused] will-change-transform"
         style={animate ? { animation: animDef } : undefined}
       >
         {doubled.map((photo, i) => (
@@ -216,7 +216,7 @@ function ScrollRow({ items, direction = "left", tall = false, animate = false, o
       </div>
     </div>
   );
-}
+});
 
 // ── Gallery Section ───────────────────────────────────────
 export default function Gallery() {
@@ -253,31 +253,38 @@ export default function Gallery() {
       ...gallery.row2.map(p => ({ ...p, row: "row2" })),
     ].filter(p => p.src);
 
-    let settled = 0;
     const threshold = Math.min(3, allRaw.length);
+    const resolvedMap = new Map();
+    let firstBatchDone = false;
 
-    allRaw.forEach(photo => {
-      const loader = getLoader(photo.src);
-      if (!loader) return;
+    function applyMap(prev, map) {
+      const next = { row1: [...prev.row1], row2: [...prev.row2] };
+      map.forEach(({ row, src }, id) => {
+        const idx = next[row].findIndex(p => p.id === id);
+        if (idx !== -1) next[row][idx] = { ...next[row][idx], resolvedSrc: src };
+      });
+      return next;
+    }
 
-      loader()
-        .then(mod => {
-          const resolvedSrc = mod.default;
-          settled++;
+    await Promise.all(
+      allRaw.map(async (photo) => {
+        const loader = getLoader(photo.src);
+        if (!loader) return;
+        try {
+          const mod = await loader();
+          resolvedMap.set(photo.id, { row: photo.row, src: mod.default });
+          // First batch: show & animate as soon as threshold images are ready
+          if (!firstBatchDone && resolvedMap.size >= threshold) {
+            firstBatchDone = true;
+            setResolvedPhotos(prev => applyMap(prev, new Map(resolvedMap)));
+            setAnimate(true);
+          }
+        } catch {}
+      })
+    );
 
-          setResolvedPhotos(prev => {
-            const row = photo.row;
-            const idx = prev[row].findIndex(p => p.id === photo.id);
-            if (idx === -1) return prev;
-            const newRow = [...prev[row]];
-            newRow[idx] = { ...newRow[idx], resolvedSrc };
-            return { ...prev, [row]: newRow };
-          });
-
-          if (settled === threshold) setAnimate(true);
-        })
-        .catch(() => {});
-    });
+    // Single final update for any remaining images
+    setResolvedPhotos(prev => applyMap(prev, resolvedMap));
   }, []);
 
   useEffect(() => {
