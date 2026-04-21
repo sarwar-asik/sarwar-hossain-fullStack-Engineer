@@ -80,7 +80,29 @@ export default function Projects() {
           description="Things I've built that I'm proud of — open source tools, production infrastructure, developer platforms."
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Mobile swipe hint */}
+        <div className="sm:hidden flex items-center gap-2 mb-4 text-zinc-600 font-mono text-[10px]">
+          <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          swipe to browse · {visible.length} projects
+        </div>
+
+        {/* Mobile: horizontal snap-scroll carousel */}
+        <div className="sm:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-6">
+          <div className="flex gap-3 px-6 pb-2">
+            {visible.map((p, i) => (
+              <div key={p.id} className="snap-start shrink-0 w-[82vw]">
+                <ProjectCard project={p} index={i} />
+              </div>
+            ))}
+            {/* Trailing spacer so last card isn't flush with edge */}
+            <div className="shrink-0 w-2" aria-hidden="true" />
+          </div>
+        </div>
+
+        {/* Tablet+: grid */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visible.map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i} />
           ))}

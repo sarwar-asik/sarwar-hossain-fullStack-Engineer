@@ -1,8 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import { useTheme } from './hooks/useTheme'
-import Navbar from './components/layout/Navbar'
-import Footer from './components/layout/Footer'
-import Home   from './pages/Home'
+import Navbar    from './components/layout/Navbar'
+import Footer    from './components/layout/Footer'
+import BottomNav from './components/layout/BottomNav'
+import Home      from './pages/Home'
 import './App.css'
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
+      <BottomNav />
     </div>
   )
 }

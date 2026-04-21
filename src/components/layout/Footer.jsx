@@ -3,7 +3,7 @@ import profile from '../../data/profile.json'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800/60 bg-zinc-50 dark:bg-zinc-950">
+    <footer className="hidden lg:block border-t border-zinc-200 dark:border-zinc-800/60 bg-zinc-50 dark:bg-zinc-950">
       <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <span className="font-mono text-xs text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded">
           {profile.initials}
