@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 import { useTheme } from './hooks/useTheme'
-import Navbar    from './components/layout/Navbar'
-import Footer    from './components/layout/Footer'
-import BottomNav from './components/layout/BottomNav'
-import Home      from './pages/Home'
+import Navbar        from './components/layout/Navbar'
+import Footer        from './components/layout/Footer'
+import BottomNav     from './components/layout/BottomNav'
+import UpdatePrompt  from './components/ui/UpdatePrompt'
+import Home          from './pages/Home'
 import './App.css'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
       </Routes>
       <Footer />
       <BottomNav />
+      <UpdatePrompt />
     </div>
   )
 }
