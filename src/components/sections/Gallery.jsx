@@ -310,7 +310,7 @@ export default function Gallery() {
       <section
         ref={sectionRef}
         id="gallery"
-        aria-label="Sarwar Hossain Photo Gallery"
+        aria-label="Sarwar Hossain | Sarwar Asik Photo Gallery"
         className="py-24 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 overflow-hidden"
       >
         {/* Header */}

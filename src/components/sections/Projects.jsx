@@ -72,7 +72,7 @@ export default function Projects() {
   const visible  = showAll ? projects : featured
 
   return (
-    <section id="projects" aria-label="Sarwar Hossain Selected Projects" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="projects" aria-label="Sarwar Hossain | Sarwar Asik Selected Projects" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           label="03 · work"

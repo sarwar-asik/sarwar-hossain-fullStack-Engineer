@@ -109,7 +109,7 @@ export default function Contact() {
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrTarget)}&color=ffffff&bgcolor=18181b&margin=10&format=svg`;
 
   return (
-    <section id="contact" aria-label="Contact Sarwar Hossain" className="py-24 bg-zinc-900 border-t border-zinc-800">
+    <section id="contact" aria-label="Contact Sarwar Hossain | Sarwar Asik" className="py-24 bg-zinc-900 border-t border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="mb-12">
