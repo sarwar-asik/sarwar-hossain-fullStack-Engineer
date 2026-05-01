@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react";
 import Icon from "../ui/Icon";
 import Button from "../ui/Button";
 import profile from "../../data/profile.json";
@@ -6,8 +6,8 @@ import profile from "../../data/profile.json";
 /* ── Profile photo / avatar ─────────────────────────────── */
 function ProfileAvatar() {
   const { name, initials, role, available, photo } = profile;
-  const [imgFailed, setImgFailed] = useState(false)
-  const showPhoto = photo && !imgFailed
+  const [imgFailed, setImgFailed] = useState(false);
+  const showPhoto = photo && !imgFailed;
 
   return (
     <div className="hidden lg:flex items-center justify-center relative select-none">
@@ -48,8 +48,12 @@ function ProfileAvatar() {
                 onError={() => setImgFailed(true)}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center relative" style={{ background: 'linear-gradient(135deg, #27272a 0%, #18181b 60%, #1c1917 100%)' }}>
-                <div className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle at 30% 30%, rgba(245,158,11,0.08), transparent 60%)' }} aria-hidden="true" />
+              <div className="w-full h-full flex items-center justify-center relative" style={{ background: "linear-gradient(135deg, #27272a 0%, #18181b 60%, #1c1917 100%)" }}>
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: "radial-gradient(circle at 30% 30%, rgba(245,158,11,0.08), transparent 60%)" }}
+                  aria-hidden="true"
+                />
                 <span className="font-mono text-6xl font-bold text-zinc-700 z-10 select-none">{initials}</span>
               </div>
             )}
@@ -84,13 +88,87 @@ function ProfileAvatar() {
   );
 }
 
+/* ── Mobile-only hero photo block ───────────────────────── */
+function MobileHeroPhoto() {
+  const { name, initials, available, photo } = profile;
+  const [imgFailed, setImgFailed] = useState(false);
+  const showPhoto = photo && !imgFailed;
+
+  return (
+    <div className="lg:hidden flex flex-col items-center mb-10 select-none">
+      {/* p-8 wrapper gives rings and viewfinder room to breathe */}
+      <div className="relative p-8">
+        {/* Viewfinder corner accents */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-amber-500/50" />
+          <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-amber-500/50" />
+          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-amber-500/50" />
+          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-amber-500/50" />
+        </div>
+
+        {/* Photo + rings */}
+        <div className="relative w-36 h-36">
+          {/* Ambient glow */}
+          <div
+            className="absolute -inset-8 rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(245,158,11,0.09) 0%, transparent 70%)" }}
+            aria-hidden="true"
+          />
+          {/* Spinning dashed ring */}
+          <div className="absolute -inset-3 rounded-full border border-amber-500/15 border-dashed animate-[spin_30s_linear_infinite]" aria-hidden="true" />
+          {/* Static ring */}
+          <div className="absolute -inset-1.5 rounded-full border border-amber-500/20" aria-hidden="true" />
+
+          {/* Photo */}
+          <div className="w-full h-full rounded-full overflow-hidden border-2 border-amber-500/30 bg-zinc-900 shadow-2xl flex items-center justify-center">
+            {showPhoto ? (
+              <img
+                src={photo}
+                alt={`${name} (Sarwar Asik) – Software Engineer & Backend Engineer`}
+                width={144}
+                height={144}
+                className="w-full h-full object-cover object-top"
+                onError={() => setImgFailed(true)}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center relative" style={{ background: "linear-gradient(135deg, #27272a 0%, #18181b 60%, #1c1917 100%)" }}>
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: "radial-gradient(circle at 30% 30%, rgba(245,158,11,0.08), transparent 60%)" }}
+                  aria-hidden="true"
+                />
+                <span className="font-mono text-5xl font-bold text-zinc-700 z-10 select-none">{initials}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Available badge — bottom centre */}
+          {available && (
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1 shadow-lg whitespace-nowrap z-10">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-mono text-[10px] text-emerald-400">available</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Dev label */}
+      <p className="font-mono text-[10px] text-zinc-600 -mt-1">// profile.identity</p>
+    </div>
+  );
+}
+
 /* ── Hero section ───────────────────────────────────────── */
 export default function Hero() {
   const { name, role, bio, available, social, stats } = profile;
   const [first, ...rest] = name.split(" ");
 
   return (
-    <section id="hero" aria-label="Sarwar Hossain | Sarwar Asik – Software Engineer & Backend Engineer" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950">
+    <section
+      id="hero"
+      aria-label="Sarwar Hossain | Sarwar Asik – Software Engineer & Backend Engineer"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950"
+    >
       {/* Ambient amber glow — top-left */}
       <div className="hero-glow absolute inset-0 pointer-events-none" aria-hidden="true" />
 
@@ -101,17 +179,21 @@ export default function Hero() {
         <div className="grid lg:grid-cols-[1fr_420px] gap-16 items-center">
           {/* ── Left: content ── */}
           <div>
-            {/* Available status */}
-            <div className="anim mb-10">
-              {available ? (
+            {/* Mobile photo block — desktop sees ProfileAvatar in the right column */}
+
+            {/* Available status — hidden on mobile when available (MobileHeroPhoto owns it) */}
+            {available ? (
+              <div className="hidden lg:block anim mb-10">
                 <span className="inline-flex items-center gap-2 font-mono text-xs text-amber-500 border border-amber-500/20 rounded px-2.5 py-1 bg-amber-500/5">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   open_to_work = true
                 </span>
-              ) : (
+              </div>
+            ) : (
+              <div className="anim mb-10">
                 <span className="font-mono text-xs text-zinc-600">// not currently looking</span>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Name */}
             <h1 className="anim anim-d1 font-bold tracking-tight leading-none text-zinc-100 dark:text-zinc-100 mb-6">
@@ -123,6 +205,7 @@ export default function Hero() {
             {/* Role */}
             <p className="anim anim-d2 font-mono text-sm text-zinc-500 mb-6 tracking-wide">{role.toLowerCase().replace(/ /g, "_")}</p>
 
+            <MobileHeroPhoto />
             {/* Bio */}
             <p className="anim anim-d3 text-base text-zinc-400 dark:text-zinc-400 max-w-lg leading-relaxed mb-10">{bio}</p>
 
