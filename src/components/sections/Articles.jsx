@@ -51,7 +51,7 @@ function ArticleRow({ article }) {
 
 export default function Articles() {
   return (
-    <section id="articles" className="py-24 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="articles" aria-label="Sarwar Hossain Articles and Writing" className="py-24 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <div className="max-w-3xl">
           <SectionHeader

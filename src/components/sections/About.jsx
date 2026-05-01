@@ -28,7 +28,7 @@ function ProfilePhoto() {
         {/* Photo / initials */}
         <div className="w-full h-full rounded-full overflow-hidden bg-zinc-800 dark:bg-zinc-800 flex items-center justify-center">
           {photo ? (
-            <img src={photo} alt={name} className="w-full h-full object-cover object-top" loading="lazy" />
+            <img src={photo} alt={`${name} – Software Engineer & Backend Engineer`} className="w-full h-full object-cover object-top" loading="lazy" />
           ) : (
             <div
               className="w-full h-full flex items-center justify-center"
@@ -66,7 +66,7 @@ export default function About() {
   const { location, email } = profile
 
   return (
-    <section id="about" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="about" aria-label="About Sarwar Hossain" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-20 items-start">
 

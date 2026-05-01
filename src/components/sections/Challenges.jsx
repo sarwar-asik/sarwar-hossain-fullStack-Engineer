@@ -263,7 +263,7 @@ export default function Challenges() {
   const visibleRest = showAll ? rest : rest.slice(0, INITIAL_GRID_COUNT)
 
   return (
-    <section id="challenges" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="challenges" aria-label="Sarwar Hossain Engineering Challenges" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* ── War-room header ── */}

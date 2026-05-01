@@ -3,7 +3,7 @@ import skills from '../../data/skills.json'
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="skills" aria-label="Sarwar Hossain Technical Skills" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           label="04 · toolkit"

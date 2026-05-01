@@ -40,7 +40,7 @@ function ProfileAvatar() {
             {showPhoto ? (
               <img
                 src={photo}
-                alt={name}
+                alt={`${name} – Software Engineer & Backend Engineer`}
                 width={256}
                 height={256}
                 fetchpriority="high"
@@ -90,7 +90,7 @@ export default function Hero() {
   const [first, ...rest] = name.split(" ");
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950">
+    <section id="hero" aria-label="Sarwar Hossain – Software Engineer & Backend Engineer" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-zinc-950 dark:bg-zinc-950">
       {/* Ambient amber glow — top-left */}
       <div className="hero-glow absolute inset-0 pointer-events-none" aria-hidden="true" />
 
@@ -117,6 +117,7 @@ export default function Hero() {
             <h1 className="anim anim-d1 font-bold tracking-tight leading-none text-zinc-100 dark:text-zinc-100 mb-6">
               <span className="block text-5xl sm:text-7xl lg:text-8xl">{first}</span>
               <span className="block text-5xl sm:text-7xl lg:text-8xl text-amber-500">{rest.join(" ")}.</span>
+              <span className="sr-only"> – Software Engineer &amp; Backend Engineer, Dhaka Bangladesh</span>
             </h1>
 
             {/* Role */}

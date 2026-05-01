@@ -431,7 +431,7 @@ export default function Experience() {
   const companies = groupByCompany(experience);
 
   return (
-    <section id="experience" className="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="experience" aria-label="Sarwar Hossain Work Experience" className="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           label="02 · career"

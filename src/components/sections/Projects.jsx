@@ -23,13 +23,13 @@ function ProjectCard({ project, index }) {
           </span>
           <div className="flex items-center gap-1">
             {project.githubUrl && (
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} source code on GitHub`}
                 className="w-7 h-7 flex items-center justify-center rounded text-zinc-600 hover:text-amber-400 hover:bg-zinc-800 transition-colors">
                 <Icon name="github" className="w-3.5 h-3.5" />
               </a>
             )}
             {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label="Live demo"
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} live demo`}
                 className="w-7 h-7 flex items-center justify-center rounded text-zinc-600 hover:text-amber-400 hover:bg-zinc-800 transition-colors">
                 <Icon name="externalLink" className="w-3.5 h-3.5" />
               </a>
@@ -72,7 +72,7 @@ export default function Projects() {
   const visible  = showAll ? projects : featured
 
   return (
-    <section id="projects" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+    <section id="projects" aria-label="Sarwar Hossain Selected Projects" className="py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           label="03 · work"
