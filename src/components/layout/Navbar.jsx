@@ -127,7 +127,9 @@ export default function Navbar({ theme, onThemeToggle }) {
             </button>
 
             <a
-              href={`mailto:${profile.email}`}
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}&su=Hiring%20Inquiry%20%E2%80%94%20Saw%20Your%20Portfolio`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-amber-500/30 text-amber-500 text-xs font-mono hover:bg-amber-500/10 transition-colors"
             >
               Hire Me

@@ -57,8 +57,8 @@ function ContactCard({ method }) {
   const [copied, setCopied] = useState(false);
 
   function handleCopy(e) {
-    if (!method.copyable) return;
     e.preventDefault();
+    e.stopPropagation();
     navigator.clipboard.writeText(method.value).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -70,7 +70,6 @@ function ContactCard({ method }) {
       href={method.href}
       target={method.newTab ? "_blank" : undefined}
       rel={method.newTab ? "noopener noreferrer" : undefined}
-      onClick={method.copyable ? handleCopy : undefined}
       className="group relative flex items-center gap-4 p-4 rounded-lg border transition-all duration-200 hover:-translate-y-0.5"
       style={{
         borderColor: method.borderColor,
@@ -92,10 +91,16 @@ function ContactCard({ method }) {
       {/* Action */}
       <div className="shrink-0">
         {method.copyable ? (
-          <span className="flex items-center gap-1 font-mono text-[10px] transition-colors" style={{ color: copied ? "#22c55e" : method.color }}>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="flex items-center gap-1 font-mono text-[10px] transition-colors cursor-pointer"
+            style={{ color: copied ? "#22c55e" : method.color }}
+            aria-label={copied ? "Copied" : `Copy ${method.label}`}
+          >
             <Icon name={copied ? "check" : "copy"} className="w-3.5 h-3.5" />
             {copied ? "Copied!" : "Copy"}
-          </span>
+          </button>
         ) : (
           <Icon name="arrowRight" className="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform" />
         )}
