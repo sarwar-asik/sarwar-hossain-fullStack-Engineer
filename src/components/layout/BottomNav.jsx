@@ -22,7 +22,7 @@ function mapToNav(id) {
   return "contact";
 }
 
-export default function BottomNav() {
+export default function BottomNav({ theme = "dark" }) {
   const [active, setActive] = useState("hero");
   const [tapped, setTapped] = useState(null);
 
@@ -65,6 +65,7 @@ export default function BottomNav() {
     };
   }, []);
 
+  const isDark = theme === "dark";
   const activeMapped = mapToNav(active);
   const activeIdx    = Math.max(0, NAV_ITEMS.findIndex((n) => n.section === activeMapped));
 
@@ -95,9 +96,9 @@ export default function BottomNav() {
           overflow: "hidden",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
-          background: "rgba(18, 18, 20, 0.92)",
-          border: "1px solid rgba(63, 63, 70, 0.6)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
+          background: isDark ? "rgba(18, 18, 20, 0.92)" : "rgba(255, 255, 255, 0.94)",
+          border: isDark ? "1px solid rgba(63, 63, 70, 0.6)" : "1px solid rgba(212, 212, 216, 0.8)",
+          boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.45)" : "0 4px 24px rgba(0,0,0,0.08), 0 1px 8px rgba(0,0,0,0.04)",
         }}
       >
         {/* Sliding amber bar */}
@@ -152,7 +153,7 @@ export default function BottomNav() {
                     borderRadius: 12,
                     background: isActive ? "rgba(245,158,11,0.22)" : "transparent",
                     border: isActive ? "1px solid rgba(245,158,11,0.35)" : "1px solid transparent",
-                    color: isActive ? "#fbbf24" : "#71717a",
+                    color: isActive ? "#fbbf24" : isDark ? "#71717a" : "#52525b",
                     transform: isTapped ? "scale(0.78)" : isActive ? "scale(1.07)" : "scale(1)",
                     transition: "transform 200ms cubic-bezier(0.175,0.885,0.32,1.275), background 200ms ease, color 200ms ease, border-color 200ms ease",
                   }}
@@ -166,7 +167,7 @@ export default function BottomNav() {
                     fontSize: 9.5,
                     fontWeight: isActive ? 600 : 500,
                     letterSpacing: "0.04em",
-                    color: isActive ? "#f59e0b" : "#52525b",
+                    color: isActive ? "#f59e0b" : isDark ? "#52525b" : "#52525b",
                     transition: "color 200ms ease, font-weight 200ms ease",
                   }}
                 >

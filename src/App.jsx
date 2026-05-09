@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
-      <BottomNav />
+      <BottomNav theme={theme} />
       <UpdatePrompt />
     </div>
   )
