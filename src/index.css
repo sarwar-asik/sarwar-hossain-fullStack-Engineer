@@ -138,7 +138,7 @@ body {
 /* Base */
 html:not(.dark) {
   background-color: #fafafa;
-  color: #18181b;
+  color: #1c1c1f;
 }
 html:not(.dark) body {
   background-color: #fafafa;
@@ -210,29 +210,32 @@ html:not(.dark) .divide-zinc-800 > * + * {
 }
 
 /* ── Text ── */
+/* Scale shifted darker in light mode for comfortable reading contrast.      */
+/* Warm near-black (#1c1c1f) used for primary text instead of cold zinc-900  */
+/* to reduce eye strain on bright backgrounds.                               */
 html:not(.dark) .text-zinc-100 {
-  color: #18181b;
+  color: #1c1c1f;
 }
 html:not(.dark) .text-zinc-200 {
-  color: #27272a;
+  color: #26262a;
 }
 html:not(.dark) .text-zinc-300 {
-  color: #3f3f46;
+  color: #3a3a42;
 }
 html:not(.dark) .text-zinc-400 {
-  color: #52525b;
+  color: #48484f;
 }
 html:not(.dark) .text-zinc-500 {
-  color: #71717a;
+  color: #5a5a65;
 }
 html:not(.dark) .text-zinc-600 {
-  color: #71717a;
+  color: #6e6e7a;
 }
 html:not(.dark) .text-zinc-700 {
-  color: #a1a1aa;
+  color: #8e8e99;
 }
 html:not(.dark) .text-zinc-800 {
-  color: #d4d4d8;
+  color: #c8c8d0;
 }
 
 /* ── Badge (default variant uses hardcoded bg-zinc-800) ── */

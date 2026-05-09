@@ -167,7 +167,7 @@ export default function BottomNav({ theme = "dark" }) {
                     fontSize: 9.5,
                     fontWeight: isActive ? 600 : 500,
                     letterSpacing: "0.04em",
-                    color: isActive ? "#f59e0b" : isDark ? "#52525b" : "#52525b",
+                    color: isActive ? "#f59e0b" : "#52525b",
                     transition: "color 200ms ease, font-weight 200ms ease",
                   }}
                 >
