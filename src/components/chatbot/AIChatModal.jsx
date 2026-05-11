@@ -6,17 +6,17 @@ const INTRO = "I'm Sarwar's AI. Ask me about my experience, projects, stack, or 
 
 const CHIPS = [
   { label: "--experience", prompt: "Tell me about your work experience" },
-  { label: "--projects", prompt: "What are your most impressive projects?" },
-  { label: "--skills", prompt: "What are your core technical skills?" },
-  { label: "--hire", prompt: "Are you available for hire? How can I reach you?" },
+  { label: "--projects",   prompt: "What are your most impressive projects?" },
+  { label: "--skills",     prompt: "What are your core technical skills?" },
+  { label: "--hire",       prompt: "Are you available for hire? How can I reach you?" },
 ];
 
 function relativeTime(ts) {
   const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return "just now";
-  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
-  if (s < 86400 * 7) return `${Math.floor(s / 86400)}d ago`;
+  if (s < 60)          return "just now";
+  if (s < 3600)        return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400)       return `${Math.floor(s / 3600)}h ago`;
+  if (s < 86400 * 7)   return `${Math.floor(s / 86400)}d ago`;
   return new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
@@ -25,17 +25,13 @@ export default function AIChatModal({ isOpen, onClose }) {
   const [introText, setIntroText] = useState("");
   const [introDone, setIntroDone] = useState(false);
   const hasOpenedRef = useRef(false);
-  const scrollRef = useRef(null);
-  const inputRef = useRef(null);
+  const scrollRef    = useRef(null);
+  const inputRef     = useRef(null);
 
   // Typewriter intro — only animated on first open
   useEffect(() => {
     if (!isOpen) return;
-    if (hasOpenedRef.current) {
-      setIntroText(INTRO);
-      setIntroDone(true);
-      return;
-    }
+    if (hasOpenedRef.current) { setIntroText(INTRO); setIntroDone(true); return; }
     hasOpenedRef.current = true;
     setIntroText("");
     setIntroDone(false);
@@ -43,22 +39,17 @@ export default function AIChatModal({ isOpen, onClose }) {
     const iv = setInterval(() => {
       i++;
       setIntroText(INTRO.slice(0, i));
-      if (i >= INTRO.length) {
-        clearInterval(iv);
-        setIntroDone(true);
-      }
+      if (i >= INTRO.length) { clearInterval(iv); setIntroDone(true); }
     }, 18);
     return () => clearInterval(iv);
   }, [isOpen]);
 
-  // Focus input after entry animation settles
   useEffect(() => {
     if (!isOpen) return;
     const t = setTimeout(() => inputRef.current?.focus(), 150);
     return () => clearTimeout(t);
   }, [isOpen]);
 
-  // Auto-scroll on new content
   useEffect(() => {
     if (!isOpen) return;
     const el = scrollRef.current;
@@ -66,12 +57,9 @@ export default function AIChatModal({ isOpen, onClose }) {
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, introText, isOpen]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     if (!isOpen) return;
-    const handler = (e) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
@@ -80,12 +68,11 @@ export default function AIChatModal({ isOpen, onClose }) {
     if (input.trim()) sendMessage(input);
   }, [input, sendMessage]);
 
-  // Only close the modal — history intentionally persists across open/close cycles.
-  // clear() is reserved for the explicit "clear" button in the title bar.
   const handleClose = useCallback(() => onClose(), [onClose]);
 
   const hasUserMessages = messages.some((m) => m.role === "user");
-  const showSpinner = isStreaming && messages.at(-1)?.content === "";
+  const showSpinner     = isStreaming && messages.at(-1)?.content === "";
+  const canSend         = !isStreaming && quota.canSend && !!input.trim();
 
   if (!isOpen) return null;
 
@@ -98,11 +85,14 @@ export default function AIChatModal({ isOpen, onClose }) {
       <div
         className="ai-terminal ai-modal-enter relative w-full max-w-xl sm:max-w-2xl flex flex-col rounded-2xl overflow-hidden"
         style={{
-          backgroundColor: "#09090b",
+          backgroundColor: "var(--ai-bg)",
           maxHeight: "min(calc(100svh - 116px), 620px)",
           minHeight: 340,
-          border: "1px solid rgba(245,158,11,0.18)",
-          boxShadow: "0 0 0 1px rgba(245,158,11,0.06), " + "0 32px 80px rgba(0,0,0,0.85), " + "0 0 60px rgba(245,158,11,0.06)",
+          border: "1px solid var(--ai-border)",
+          boxShadow:
+            "0 0 0 1px rgba(245,158,11,0.06), " +
+            "0 32px 80px rgba(0,0,0,0.85), " +
+            "0 0 60px rgba(245,158,11,0.06)",
           animation: "ai-border-glow 4s ease-in-out infinite",
         }}
         onClick={(e) => e.stopPropagation()}
@@ -112,10 +102,10 @@ export default function AIChatModal({ isOpen, onClose }) {
 
         {/* ── Title bar ── */}
         <div
-          className="relative flex items-center justify-between px-4 py-3 flex-shrink-0 z-20"
+          className="relative flex items-center justify-between px-4 py-3 shrink-0 z-20"
           style={{
-            backgroundColor: "rgba(6,6,8,0.95)",
-            borderBottom: "1px solid rgba(245,158,11,0.1)",
+            backgroundColor: "var(--ai-titlebar-bg)",
+            borderBottom: "1px solid var(--ai-titlebar-border)",
           }}
         >
           <div className="flex items-center gap-2">
@@ -127,7 +117,7 @@ export default function AIChatModal({ isOpen, onClose }) {
             />
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "rgba(234,179,8,0.45)" }} />
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "rgba(34,197,94,0.45)" }} />
-            <span className="ml-3 font-mono text-xs hidden sm:inline" style={{ color: "#52525b" }}>
+            <span className="ml-3 font-mono text-xs hidden sm:inline" style={{ color: "var(--ai-text-meta)" }}>
               sarwar@portfolio — ai assistant
             </span>
           </div>
@@ -138,12 +128,12 @@ export default function AIChatModal({ isOpen, onClose }) {
                 onClick={clear}
                 title="Clear conversation history"
                 className="ai-clear-btn font-mono text-xs focus:outline-none"
-                style={{ color: "#3f3f46", letterSpacing: "0.02em" }}
+                style={{ color: "var(--ai-text-dim)", letterSpacing: "0.02em" }}
               >
                 clear
               </button>
             )}
-            <span className="font-mono text-xs" style={{ color: "#27272a" }}>
+            <span className="font-mono text-xs" style={{ color: "var(--ai-text-faint)" }}>
               llama-3.3-70b
             </span>
             <span className="flex items-center gap-1.5 font-mono text-xs" style={{ color: "rgba(245,158,11,0.65)" }}>
@@ -161,23 +151,26 @@ export default function AIChatModal({ isOpen, onClose }) {
         </div>
 
         {/* ── Scrollable body ── */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 ai-scrollbar-hide relative z-20" style={{ overscrollBehavior: "contain" }}>
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto px-5 py-4 ai-scrollbar-hide relative z-20"
+          style={{ overscrollBehavior: "contain" }}
+        >
           {/* Intro */}
           <div className="mb-5">
             <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="font-mono text-xs" style={{ color: "#52525b" }}>
-                sarwar@ai
-              </span>
-              <span className="font-mono text-xs" style={{ color: "#3f3f46" }}>
-                ~
-              </span>
-              <span className="font-mono text-xs" style={{ color: "rgba(245,158,11,0.75)" }}>
-                ❯
-              </span>
+              <span className="font-mono text-xs" style={{ color: "var(--ai-text-meta)" }}>sarwar@ai</span>
+              <span className="font-mono text-xs" style={{ color: "var(--ai-text-dim)" }}>~</span>
+              <span className="font-mono text-xs" style={{ color: "rgba(245,158,11,0.75)" }}>❯</span>
             </div>
-            <span className="font-mono text-sm leading-relaxed ai-response-text" style={{ color: "#a1a1aa" }}>
+            <span className="font-mono text-sm leading-relaxed ai-response-text" style={{ color: "var(--ai-text-body)" }}>
               {introText}
-              {!introDone && <span className="ai-cursor inline-block align-middle ml-0.5" style={{ width: 7, height: 13, backgroundColor: "rgba(245,158,11,0.7)" }} />}
+              {!introDone && (
+                <span
+                  className="ai-cursor inline-block align-middle ml-0.5"
+                  style={{ width: 7, height: 13, backgroundColor: "rgba(245,158,11,0.7)" }}
+                />
+              )}
             </span>
           </div>
 
@@ -190,9 +183,9 @@ export default function AIChatModal({ isOpen, onClose }) {
                   onClick={() => sendMessage(chip.prompt)}
                   className="ai-chip font-mono text-xs px-3 py-1.5 rounded-md transition-all duration-150 focus:outline-none"
                   style={{
-                    backgroundColor: "rgba(18,18,20,0.9)",
-                    border: "1px solid rgba(63,63,70,0.7)",
-                    color: "#71717a",
+                    backgroundColor: "var(--ai-chip-bg)",
+                    border: "1px solid var(--ai-chip-border)",
+                    color: "var(--ai-chip-color)",
                   }}
                 >
                   {chip.label}
@@ -204,11 +197,11 @@ export default function AIChatModal({ isOpen, onClose }) {
           {/* Restored session divider */}
           {restoredAt && messages.length > 0 && (
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1" style={{ borderTop: "1px solid rgba(63,63,70,0.35)" }} />
-              <span className="font-mono text-xs" style={{ color: "#3f3f46", letterSpacing: "0.04em" }}>
+              <div className="flex-1" style={{ borderTop: "1px solid var(--ai-divider)" }} />
+              <span className="font-mono text-xs" style={{ color: "var(--ai-text-dim)", letterSpacing: "0.04em" }}>
                 resumed · {relativeTime(restoredAt)}
               </span>
-              <div className="flex-1" style={{ borderTop: "1px solid rgba(63,63,70,0.35)" }} />
+              <div className="flex-1" style={{ borderTop: "1px solid var(--ai-divider)" }} />
             </div>
           )}
 
@@ -245,7 +238,9 @@ export default function AIChatModal({ isOpen, onClose }) {
               }}
             >
               <div>↺ per-minute limit reached · {quota.minuteResetIn}s cooldown</div>
-              <div style={{ color: "rgba(245,158,11,0.5)", marginTop: 3 }}>you can send {quota.minuteLimit} messages per minute — try again shortly</div>
+              <div style={{ color: "rgba(245,158,11,0.5)", marginTop: 3 }}>
+                you can send {quota.minuteLimit} messages per minute — try again shortly
+              </div>
             </div>
           )}
           {error === "daily-limit" && (
@@ -258,10 +253,10 @@ export default function AIChatModal({ isOpen, onClose }) {
                 lineHeight: 1.6,
               }}
             >
-              <div>
-                ◼ daily limit reached · {quota.dayUsed}/{quota.dayLimit} messages used
+              <div>◼ daily limit reached · {quota.dayUsed}/{quota.dayLimit} messages used</div>
+              <div style={{ color: "rgba(252,165,165,0.5)", marginTop: 3 }}>
+                limit resets at midnight — feel free to come back tomorrow
               </div>
-              <div style={{ color: "rgba(252,165,165,0.5)", marginTop: 3 }}>limit resets at midnight — feel free to come back tomorrow</div>
             </div>
           )}
           {error && error !== "minute-limit" && error !== "daily-limit" && (
@@ -280,13 +275,13 @@ export default function AIChatModal({ isOpen, onClose }) {
 
         {/* ── Input bar ── */}
         <div
-          className="flex-shrink-0 flex items-center gap-3 px-4 py-3 relative z-20"
+          className="shrink-0 flex items-center gap-3 px-4 py-3 relative z-20"
           style={{
-            borderTop: "1px solid rgba(245,158,11,0.09)",
-            backgroundColor: "rgba(7,7,9,0.97)",
+            borderTop: "1px solid var(--ai-inputbar-border)",
+            backgroundColor: "var(--ai-inputbar-bg)",
           }}
         >
-          <span className="font-mono text-sm flex-shrink-0 select-none" style={{ color: "rgba(245,158,11,0.65)" }}>
+          <span className="font-mono text-sm shrink-0 select-none" style={{ color: "rgba(245,158,11,0.65)" }}>
             ❯
           </span>
           <input
@@ -294,33 +289,28 @@ export default function AIChatModal({ isOpen, onClose }) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                submit();
-              }
+              if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
             }}
             disabled={isStreaming || !quota.canSend}
-            placeholder={quota.dayBlocked ? "Daily limit reached" : quota.minuteBlocked ? `Cooling down · ${quota.minuteResetIn}s` : "Ask anything..."}
+            placeholder={
+              quota.dayBlocked   ? "Daily limit reached" :
+              quota.minuteBlocked ? `Cooling down · ${quota.minuteResetIn}s` :
+              "Ask anything..."
+            }
             className="flex-1 bg-transparent font-mono text-sm outline-none disabled:opacity-40"
-            style={{
-              color: "#e4e4e7",
-              caretColor: "rgba(245,158,11,0.9)",
-            }}
+            style={{ color: "var(--ai-text-input)", caretColor: "rgba(245,158,11,0.9)" }}
           />
           <button
             onClick={submit}
-            disabled={isStreaming || !quota.canSend || !input.trim()}
+            disabled={!canSend}
             aria-label="Send message"
-            className="ai-send-btn flex-shrink-0 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-amber-500/40 rounded-lg transition-all duration-150"
+            className="ai-send-btn shrink-0 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-amber-500/40 rounded-lg transition-all duration-150"
             style={{
               width: 34,
               height: 34,
-              backgroundColor: input.trim() && !isStreaming && quota.canSend
-                ? 'rgba(245,158,11,0.12)'
-                : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${input.trim() && !isStreaming && quota.canSend ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.06)'}`,
-              flexShrink: 0,
-              cursor: input.trim() && !isStreaming && quota.canSend ? 'pointer' : 'default',
+              backgroundColor: canSend ? "rgba(245,158,11,0.12)" : "var(--ai-send-bg)",
+              border: `1px solid ${canSend ? "rgba(245,158,11,0.35)" : "var(--ai-send-border)"}`,
+              cursor: canSend ? "pointer" : "default",
             }}
           >
             {isStreaming ? (
@@ -330,7 +320,7 @@ export default function AIChatModal({ isOpen, onClose }) {
                     key={i}
                     className="w-1 h-1 rounded-full"
                     style={{
-                      backgroundColor: 'rgba(245,158,11,0.6)',
+                      backgroundColor: "rgba(245,158,11,0.6)",
                       animation: `ai-bounce 0.9s ease-in-out ${i * 0.16}s infinite`,
                     }}
                   />
@@ -340,9 +330,9 @@ export default function AIChatModal({ isOpen, onClose }) {
               <svg
                 width="14" height="14" viewBox="0 0 14 14" fill="none"
                 style={{
-                  color: input.trim() && quota.canSend ? 'rgba(245,158,11,0.9)' : 'rgba(255,255,255,0.15)',
-                  transition: 'color 0.15s ease',
-                  transform: 'rotate(90deg)',
+                  color: canSend ? "rgba(245,158,11,0.9)" : "var(--ai-send-icon)",
+                  transition: "color 0.15s ease",
+                  transform: "rotate(90deg)",
                 }}
               >
                 <path
@@ -358,7 +348,10 @@ export default function AIChatModal({ isOpen, onClose }) {
         </div>
 
         {/* ── Quota bar ── */}
-        <div className="flex-shrink-0 px-4 py-1.5 relative z-20" style={{ backgroundColor: "#050507", borderTop: "1px solid rgba(255,255,255,0.025)" }}>
+        <div
+          className="shrink-0 px-4 py-1.5 relative z-20"
+          style={{ backgroundColor: "var(--ai-footer-bg)", borderTop: "1px solid var(--ai-footer-border)" }}
+        >
           {quota.dayBlocked ? (
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs" style={{ color: "#fca5a5" }}>
@@ -379,24 +372,29 @@ export default function AIChatModal({ isOpen, onClose }) {
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="flex-1 relative" style={{ height: 2, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 1 }}>
+              <div
+                className="flex-1 relative"
+                style={{ height: 2, backgroundColor: "var(--ai-track)", borderRadius: 1 }}
+              >
                 <div
                   style={{
                     position: "absolute",
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
+                    top: 0, bottom: 0, left: 0,
                     width: `${Math.min((quota.dayUsed / quota.dayLimit) * 100, 100)}%`,
-                    backgroundColor: quota.dayUsed >= quota.dayLimit * 0.8 ? "rgba(245,158,11,0.65)" : "rgba(245,158,11,0.28)",
+                    backgroundColor: quota.dayUsed >= quota.dayLimit * 0.8
+                      ? "rgba(245,158,11,0.65)"
+                      : "rgba(245,158,11,0.28)",
                     borderRadius: 1,
                     transition: "width 0.4s ease",
                   }}
                 />
               </div>
               <span
-                className="font-mono text-xs flex-shrink-0"
+                className="font-mono text-xs shrink-0"
                 style={{
-                  color: quota.dayUsed >= quota.dayLimit * 0.8 ? "rgba(245,158,11,0.6)" : "#3f3f46",
+                  color: quota.dayUsed >= quota.dayLimit * 0.8
+                    ? "rgba(245,158,11,0.6)"
+                    : "var(--ai-text-dim)",
                 }}
               >
                 {quota.dayUsed}/{quota.dayLimit}
@@ -407,16 +405,16 @@ export default function AIChatModal({ isOpen, onClose }) {
 
         {/* ── Status bar ── */}
         <div
-          className="flex-shrink-0 flex items-center justify-between px-4 py-1 relative z-20"
+          className="shrink-0 flex items-center justify-between px-4 py-1 relative z-20"
           style={{
-            backgroundColor: "#050507",
-            borderTop: "1px solid rgba(255,255,255,0.025)",
+            backgroundColor: "var(--ai-footer-bg)",
+            borderTop: "1px solid var(--ai-footer-border)",
           }}
         >
-          <span className="font-mono text-xs" style={{ color: "#27272a" }}>
+          <span className="font-mono text-xs" style={{ color: "var(--ai-text-faint)" }}>
             enter to send · esc to close · ctrl+k
           </span>
-          <span className="font-mono text-xs" style={{ color: "#27272a" }}>
+          <span className="font-mono text-xs" style={{ color: "var(--ai-text-faint)" }}>
             groq · e2e encrypted
           </span>
         </div>

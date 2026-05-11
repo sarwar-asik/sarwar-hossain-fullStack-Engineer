@@ -282,6 +282,61 @@ html:not(.dark) .ai-orb-btn {
     0 4px 18px rgba(0, 0, 0, 0.25) !important;
 }
 
+/* ── AI Terminal: design tokens ─────────────────────────── */
+.ai-terminal {
+  --ai-bg:              #09090b;
+  --ai-border:          rgba(245,158,11,0.18);
+  --ai-titlebar-bg:     rgba(6,6,8,0.95);
+  --ai-titlebar-border: rgba(245,158,11,0.1);
+  --ai-inputbar-bg:     rgba(7,7,9,0.97);
+  --ai-inputbar-border: rgba(245,158,11,0.09);
+  --ai-footer-bg:       #050507;
+  --ai-footer-border:   rgba(255,255,255,0.025);
+  --ai-text-meta:       #52525b;
+  --ai-text-dim:        #3f3f46;
+  --ai-text-faint:      #27272a;
+  --ai-text-body:       #a1a1aa;
+  --ai-text-input:      #e4e4e7;
+  --ai-chip-bg:         rgba(18,18,20,0.9);
+  --ai-chip-border:     rgba(63,63,70,0.7);
+  --ai-chip-color:      #71717a;
+  --ai-divider:         rgba(63,63,70,0.35);
+  --ai-track:           rgba(255,255,255,0.05);
+  --ai-send-bg:         rgba(255,255,255,0.03);
+  --ai-send-border:     rgba(255,255,255,0.06);
+  --ai-send-icon:       rgba(255,255,255,0.15);
+}
+
+html:not(.dark) .ai-terminal {
+  --ai-bg:              #f8f9fb;
+  --ai-border:          rgba(245,158,11,0.28);
+  --ai-titlebar-bg:     rgba(241,241,245,0.97);
+  --ai-titlebar-border: rgba(245,158,11,0.15);
+  --ai-inputbar-bg:     rgba(242,242,246,0.97);
+  --ai-inputbar-border: rgba(245,158,11,0.14);
+  --ai-footer-bg:       #f0f0f4;
+  --ai-footer-border:   rgba(0,0,0,0.07);
+  --ai-text-meta:       #3a3a42;
+  --ai-text-dim:        #52525b;
+  --ai-text-faint:      #6e6e7a;
+  --ai-text-body:       #3a3a42;
+  --ai-text-input:      #1c1c1f;
+  --ai-chip-bg:         rgba(228,228,234,0.9);
+  --ai-chip-border:     rgba(148,148,158,0.5);
+  --ai-chip-color:      #52525b;
+  --ai-divider:         rgba(0,0,0,0.1);
+  --ai-track:           rgba(0,0,0,0.07);
+  --ai-send-bg:         rgba(0,0,0,0.04);
+  --ai-send-border:     rgba(0,0,0,0.1);
+  --ai-send-icon:       rgba(0,0,0,0.2);
+  background-color: #f8f9fb !important;
+  border-color: rgba(245,158,11,0.28) !important;
+  box-shadow:
+    0 0 0 1px rgba(245,158,11,0.1),
+    0 24px 60px rgba(0,0,0,0.12),
+    0 0 40px rgba(245,158,11,0.05) !important;
+}
+
 /* CRT scanline overlay */
 .ai-scanlines {
   background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.045) 3px, rgba(0, 0, 0, 0.045) 4px);
@@ -332,33 +387,14 @@ html:not(.dark) .ai-orb-btn {
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.06);
 }
 
-/* Force the terminal to stay dark regardless of theme.
-   Uses !important because the light-mode bg-zinc-950 override would win otherwise. */
-html:not(.dark) .ai-terminal {
-  background-color: #09090b !important;
-  /* More visible border in light mode so the dark card feels intentional, not broken */
-  border-color: rgba(245, 158, 11, 0.32) !important;
-  box-shadow:
-    0 0 0 1px rgba(245, 158, 11, 0.1),
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    0 0 60px rgba(245, 158, 11, 0.07) !important;
-}
-
-/* Backdrop — slightly lighter overlay in light mode so the page doesn't vanish */
+/* Backdrop — lighter overlay in light mode so the page doesn't fully vanish */
 html:not(.dark) .ai-backdrop {
-  background-color: rgba(0, 0, 0, 0.55) !important;
+  background-color: rgba(0, 0, 0, 0.52) !important;
 }
 
-/* Keep inner surfaces dark even when Tailwind's light-mode overrides fire */
-html:not(.dark) .ai-terminal .bg-zinc-900,
-html:not(.dark) .ai-terminal .bg-zinc-800,
-html:not(.dark) .ai-terminal .bg-zinc-950 {
-  background-color: inherit;
-}
-
-/* Terminal input placeholder — dimmed mono */
+/* Terminal input placeholder */
 .ai-terminal input::placeholder {
-  color: rgba(63, 63, 70, 0.85);
+  color: var(--ai-text-dim);
   font-family: "JetBrains Mono", monospace;
 }
 
