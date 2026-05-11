@@ -314,6 +314,16 @@ html:not(.dark) .ai-orb-btn {
   border-radius: 9999px;
 }
 
+/* Send button */
+.ai-send-btn:not(:disabled):hover {
+  background-color: rgba(245, 158, 11, 0.18) !important;
+  border-color: rgba(245, 158, 11, 0.55) !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.12);
+}
+.ai-send-btn:not(:disabled):active {
+  transform: scale(0.92);
+}
+
 /* Chip hover */
 .ai-chip:hover {
   border-color: rgba(245, 158, 11, 0.5) !important;

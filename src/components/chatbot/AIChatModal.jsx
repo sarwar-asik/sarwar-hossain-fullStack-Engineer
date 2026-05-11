@@ -307,20 +307,54 @@ export default function AIChatModal({ isOpen, onClose }) {
               caretColor: "rgba(245,158,11,0.9)",
             }}
           />
-          {isStreaming && (
-            <div className="flex gap-1 flex-shrink-0">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="w-1 h-1 rounded-full"
-                  style={{
-                    backgroundColor: "rgba(245,158,11,0.6)",
-                    animation: `ai-bounce 0.9s ease-in-out ${i * 0.16}s infinite`,
-                  }}
+          <button
+            onClick={submit}
+            disabled={isStreaming || !quota.canSend || !input.trim()}
+            aria-label="Send message"
+            className="ai-send-btn flex-shrink-0 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-amber-500/40 rounded-lg transition-all duration-150"
+            style={{
+              width: 34,
+              height: 34,
+              backgroundColor: input.trim() && !isStreaming && quota.canSend
+                ? 'rgba(245,158,11,0.12)'
+                : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${input.trim() && !isStreaming && quota.canSend ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.06)'}`,
+              flexShrink: 0,
+              cursor: input.trim() && !isStreaming && quota.canSend ? 'pointer' : 'default',
+            }}
+          >
+            {isStreaming ? (
+              <div className="flex gap-0.5">
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="w-1 h-1 rounded-full"
+                    style={{
+                      backgroundColor: 'rgba(245,158,11,0.6)',
+                      animation: `ai-bounce 0.9s ease-in-out ${i * 0.16}s infinite`,
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <svg
+                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                style={{
+                  color: input.trim() && quota.canSend ? 'rgba(245,158,11,0.9)' : 'rgba(255,255,255,0.15)',
+                  transition: 'color 0.15s ease',
+                  transform: 'rotate(90deg)',
+                }}
+              >
+                <path
+                  d="M7 1L7 13M7 1L2 6M7 1L12 6"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
-              ))}
-            </div>
-          )}
+              </svg>
+            )}
+          </button>
         </div>
 
         {/* ── Quota bar ── */}
