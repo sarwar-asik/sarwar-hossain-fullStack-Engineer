@@ -1,9 +1,9 @@
 /* global process */
-import profile    from '../src/data/profile.json'    with { type: 'json' };
-import experience from '../src/data/experience.json' with { type: 'json' };
-import projects   from '../src/data/projects.json'   with { type: 'json' };
-import skills     from '../src/data/skills.json'     with { type: 'json' };
-import challenges from '../src/data/challenges.json' with { type: 'json' };
+import profile    from '../src/data/profile.json';
+import experience from '../src/data/experience.json';
+import projects   from '../src/data/projects.json';
+import skills     from '../src/data/skills.json';
+import challenges from '../src/data/challenges.json';
 
 export const config = { runtime: 'edge' };
 
