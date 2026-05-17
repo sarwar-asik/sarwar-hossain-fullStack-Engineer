@@ -259,7 +259,23 @@ export default function AIChatModal({ isOpen, onClose }) {
               </div>
             </div>
           )}
-          {error && error !== "minute-limit" && error !== "daily-limit" && (
+          {error === "groq-limit" && (
+            <div
+              className="mb-4 font-mono text-xs px-3 py-2.5 rounded-lg"
+              style={{
+                color: "rgba(245,158,11,0.9)",
+                backgroundColor: "rgba(245,158,11,0.06)",
+                border: "1px solid rgba(245,158,11,0.18)",
+                lineHeight: 1.6,
+              }}
+            >
+              <div>↺ AI is being heavily queried right now</div>
+              <div style={{ color: "rgba(245,158,11,0.5)", marginTop: 3 }}>
+                please wait a moment and try again
+              </div>
+            </div>
+          )}
+          {error && error !== "minute-limit" && error !== "daily-limit" && error !== "groq-limit" && (
             <div
               className="mb-4 font-mono text-xs px-3 py-2 rounded-lg"
               style={{

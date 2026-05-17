@@ -95,7 +95,7 @@ export default async function handler(req) {
         Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-3.1-8b-instant',
         messages: [{ role: 'system', content: SYSTEM }, ...history],
         stream: true,
         max_tokens: 200,
@@ -104,6 +104,10 @@ export default async function handler(req) {
     });
   } catch {
     return new Response('Service unavailable', { status: 502 });
+  }
+
+  if (groqRes.status === 429) {
+    return new Response('rate_limited', { status: 429 });
   }
 
   if (!groqRes.ok) {

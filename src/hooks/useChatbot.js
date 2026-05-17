@@ -172,6 +172,11 @@ export function useChatbot() {
         signal: controller.signal,
       });
 
+      if (res.status === 429) {
+        setMessages(prev => prev.slice(0, -1));
+        setError('groq-limit');
+        return;
+      }
       if (!res.ok) throw new Error('Request failed');
 
       const reader  = res.body.getReader();
