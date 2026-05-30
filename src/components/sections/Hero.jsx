@@ -2,6 +2,7 @@ import { useState } from "react";
 import Icon from "../ui/Icon";
 import Button from "../ui/Button";
 import profile from "../../data/profile.json";
+import { VisitorCounterHero } from "../ui/VisitorCounter";
 
 /* ── Profile photo / avatar ─────────────────────────────── */
 function ProfileAvatar() {
@@ -43,7 +44,7 @@ function ProfileAvatar() {
                 alt={`${name} (Sarwar Asik) – Software Engineer & Backend Engineer`}
                 width={256}
                 height={256}
-                fetchpriority="high"
+                fetchPriority="high"
                 className="w-full h-full object-cover object-top"
                 onError={() => setImgFailed(true)}
               />
@@ -217,6 +218,8 @@ export default function Hero() {
                   <div className="font-mono text-xs text-zinc-600 mt-0.5">{s.label.toLowerCase().replace(/ /g, "_")}</div>
                 </div>
               ))}
+              <div className="hidden sm:block w-px h-8 bg-zinc-800" aria-hidden="true" />
+              <VisitorCounterHero />
             </div>
 
             {/* CTAs + social */}

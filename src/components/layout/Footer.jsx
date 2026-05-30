@@ -1,5 +1,6 @@
 import Icon from '../ui/Icon'
 import profile from '../../data/profile.json'
+import { VisitorCounterFooter } from '../ui/VisitorCounter'
 
 export default function Footer() {
   return (
@@ -9,9 +10,12 @@ export default function Footer() {
           {profile.initials}
         </span>
 
-        <p className="font-mono text-[11px] text-zinc-700">
-          © {new Date().getFullYear()} {profile.name}
-        </p>
+        <div className="flex flex-col items-center gap-1">
+          <p className="font-mono text-[11px] text-zinc-700">
+            © {new Date().getFullYear()} {profile.name}
+          </p>
+          <VisitorCounterFooter />
+        </div>
 
         <div className="flex items-center gap-1">
           {profile.social.map(s => (

@@ -93,6 +93,126 @@ function localChatApi(groqKey) {
   };
 }
 
+function localVisitorsApi(redisUrl, redisToken) {
+  // UA parsers (mirrors api/visitors.js — Node IncomingMessage uses header object, not .get())
+  function parseRefDomain(ref) {
+    if (!ref) return 'direct';
+    try { return new URL(ref).hostname.replace(/^www\./, '') || 'direct'; } catch { return 'direct'; }
+  }
+  function parseDevice(ua) {
+    if (!ua) return 'unknown';
+    if (/Mobile|Android|iPhone|iPod/i.test(ua)) return 'mobile';
+    if (/iPad|Tablet/i.test(ua)) return 'tablet';
+    return 'desktop';
+  }
+  function parseBrowser(ua) {
+    if (!ua) return 'unknown';
+    if (/Edg\//i.test(ua)) return 'Edge';
+    if (/Chrome\//i.test(ua)) return 'Chrome';
+    if (/Firefox\//i.test(ua)) return 'Firefox';
+    if (/Safari\//i.test(ua)) return 'Safari';
+    return 'other';
+  }
+  function parseOS(ua) {
+    if (!ua) return 'unknown';
+    if (/Windows/i.test(ua)) return 'Windows';
+    if (/Android/i.test(ua)) return 'Android';
+    if (/iPhone|iPad|iOS/i.test(ua)) return 'iOS';
+    if (/Mac OS X/i.test(ua)) return 'macOS';
+    if (/Linux/i.test(ua)) return 'Linux';
+    return 'other';
+  }
+
+  return {
+    name: 'local-visitors-api',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/api/visitors', async (req, res) => {
+        if (req.method === 'OPTIONS') {
+          res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, OPTIONS' });
+          res.end();
+          return;
+        }
+
+        const headers = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' };
+        const MIN_COUNT = 500;
+
+        if (!redisUrl || !redisToken) {
+          res.writeHead(200, headers);
+          res.end(JSON.stringify({ count: MIN_COUNT }));
+          return;
+        }
+
+        async function redis(cmd, ...args) {
+          const path = [cmd, ...args].map(encodeURIComponent).join('/');
+          const r = await fetch(`${redisUrl}/${path}`, {
+            headers: { Authorization: `Bearer ${redisToken}` },
+          });
+          const { result } = await r.json();
+          return result;
+        }
+
+        async function redisPipeline(commands) {
+          await fetch(`${redisUrl}/pipeline`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${redisToken}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(commands),
+          });
+        }
+
+        const ip = req.socket?.remoteAddress ?? '127.0.0.1';
+        const totalKey = 'portfolio:visits:total';
+        const ipKey = `portfolio:visits:ip:dev:${ip}`;
+
+        const isNew = !(await redis('get', ipKey));
+        let count;
+        if (isNew) {
+          await redis('setex', ipKey, '300', '1'); // 5-min TTL in dev
+          count = Number(await redis('incr', totalKey));
+        } else {
+          count = parseInt(await redis('get', totalKey), 10) || 0;
+        }
+        if (count < MIN_COUNT) {
+          await redis('set', totalKey, String(MIN_COUNT));
+          count = MIN_COUNT;
+        }
+
+        // Analytics — Node headers via object access, dev log key isolated from prod
+        const ua = req.headers['user-agent'] ?? '';
+        const referer = req.headers['referer'] ?? '';
+        const ts = Date.now();
+        const day = new Date().toISOString().slice(0, 10);
+        const ref = parseRefDomain(referer);
+        const device = parseDevice(ua);
+        const browser = parseBrowser(ua);
+        const os = parseOS(ua);
+
+        const payload = JSON.stringify({ ts, country: 'XX', city: 'dev', ref, device, browser, os, new: isNew });
+        const DEV_LOG = 'portfolio:visits:log:dev';
+
+        const writes = [
+          ['ZADD', DEV_LOG, String(ts), payload],
+          ['ZREMRANGEBYRANK', DEV_LOG, '0', '-5001'],
+        ];
+        if (isNew) {
+          writes.push(
+            ['INCR', `portfolio:stats:country:XX`],
+            ['INCR', `portfolio:stats:device:${device}`],
+            ['INCR', `portfolio:stats:browser:${browser}`],
+            ['INCR', `portfolio:stats:os:${os}`],
+            ['INCR', `portfolio:stats:ref:${ref}`],
+            ['INCR', `portfolio:stats:day:${day}`],
+          );
+        }
+        await redisPipeline(writes);
+
+        res.writeHead(200, headers);
+        res.end(JSON.stringify({ count }));
+      });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -132,6 +252,7 @@ export default defineConfig(({ mode }) => {
         },
       }),
       localChatApi(env.GROQ_API_KEY),
+      localVisitorsApi(env.UPSTASH_REDIS_REST_URL, env.UPSTASH_REDIS_REST_TOKEN),
     ],
   };
 });
