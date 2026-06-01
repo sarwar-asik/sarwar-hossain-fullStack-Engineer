@@ -254,13 +254,16 @@ function ChallengeCard({ challenge, featured = false }) {
 }
 
 /* ── Section ────────────────────────────────────────────── */
-const INITIAL_GRID_COUNT = 2   // non-featured cards shown before "see all"
+const INITIAL_GRID_COUNT = 2   // non-featured cards shown before "see all" (desktop)
+const MOBILE_VISIBLE     = 2   // challenges visible on mobile before expand
 
 export default function Challenges() {
-  const [showAll, setShowAll] = useState(false)
-  const featured  = challenges.filter(c => c.featured)
-  const rest      = challenges.filter(c => !c.featured)
+  const [showAll,       setShowAll]       = useState(false)
+  const [mobileShowAll, setMobileShowAll] = useState(false)
+  const featured    = challenges.filter(c => c.featured)
+  const rest        = challenges.filter(c => !c.featured)
   const visibleRest = showAll ? rest : rest.slice(0, INITIAL_GRID_COUNT)
+  const mobileHiddenCount = challenges.length - MOBILE_VISIBLE
 
   return (
     <section id="challenges" aria-label="Sarwar Hossain | Sarwar Asik Engineering Challenges" className="py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
@@ -297,21 +300,38 @@ export default function Challenges() {
 
         {/* ── Featured P0 cards ── */}
         <div className="space-y-4 mb-4">
-          {featured.map(c => (
-            <ChallengeCard key={c.id} challenge={c} featured />
+          {featured.map((c, i) => (
+            <div
+              key={c.id}
+              className={i >= MOBILE_VISIBLE && !mobileShowAll ? 'hidden sm:block' : ''}
+            >
+              <ChallengeCard challenge={c} featured />
+            </div>
           ))}
         </div>
 
         {/* ── P1/P2/P3 grid ── */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-4 ${!mobileShowAll ? 'hidden sm:grid' : 'grid'}`}>
           {visibleRest.map(c => (
             <ChallengeCard key={c.id} challenge={c} />
           ))}
         </div>
 
-        {/* ── See all toggle ── */}
+        {/* ── Mobile expand toggle (hidden on sm+) ── */}
+        <div className="mt-4 sm:hidden text-center">
+          <button
+            onClick={() => setMobileShowAll(v => !v)}
+            aria-expanded={mobileShowAll}
+            className="w-full inline-flex items-center justify-center gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-500 hover:text-amber-500 dark:hover:text-amber-400 border border-zinc-300 dark:border-zinc-800 hover:border-amber-500/40 px-5 py-2.5 rounded-lg transition-all duration-200"
+          >
+            <Icon name={mobileShowAll ? 'chevronUp' : 'chevronDown'} className="w-3.5 h-3.5" />
+            {mobileShowAll ? 'Show less' : `+ ${mobileHiddenCount} more incidents`}
+          </button>
+        </div>
+
+        {/* ── Desktop see-all toggle (hidden on mobile) ── */}
         {rest.length > INITIAL_GRID_COUNT && (
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center hidden sm:block">
             <button
               onClick={() => setShowAll(v => !v)}
               aria-expanded={showAll}
