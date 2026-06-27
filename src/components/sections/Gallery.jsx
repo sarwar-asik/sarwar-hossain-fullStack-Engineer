@@ -318,7 +318,7 @@ export default function Gallery() {
         {/* Header */}
         <div className="max-w-6xl mx-auto px-6 mb-12" style={visible ? { animation: "gallery-fade-in 0.6s ease forwards" } : { opacity: 0 }}>
           <div className="flex items-center gap-4 mb-5">
-            <span className="font-mono text-xs text-amber-500">// 06 · life</span>
+            <span className="font-mono text-xs text-amber-500">// 05 · life</span>
             <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
           </div>
 

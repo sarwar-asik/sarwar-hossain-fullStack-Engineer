@@ -119,7 +119,7 @@ export default function Contact() {
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-5">
-            <span className="font-mono text-xs text-amber-500">// 08 · contact</span>
+            <span className="font-mono text-xs text-amber-500">// 07 · contact</span>
             <div className="flex-1 h-px bg-zinc-800" />
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100">Reach Me Directly</h2>

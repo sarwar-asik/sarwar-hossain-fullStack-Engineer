@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
-  { label: "Articles", href: "#articles" },
+  // { label: "Articles", href: "#articles" },
   { label: "Life", href: "#gallery" },
   { label: "Contact", href: "#contact" },
 ];
@@ -80,9 +80,7 @@ export default function Navbar({ theme, onThemeToggle }) {
               }}
             >
               <span className="font-mono text-xs text-zinc-500">/</span>
-              <span className="font-mono text-xs text-zinc-400 truncate">
-                {NAV_LINKS.find((l) => l.href.slice(1) === activeSection)?.label ?? activeSection}
-              </span>
+              <span className="font-mono text-xs text-zinc-400 truncate">{NAV_LINKS.find((l) => l.href.slice(1) === activeSection)?.label ?? activeSection}</span>
             </span>
 
             {/* Full name — desktop only, collapses when section is active */}
