@@ -4,7 +4,7 @@ import SectionHeader from "../ui/SectionHeader";
 import experience from "../../data/experience.json";
 
 /* ── Date helpers ────────────────────────────────────────── */
-const _M = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+const _M = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
 
 function parseMonthYear(str) {
   if (!str || str.trim() === "Present") return new Date();
@@ -13,20 +13,26 @@ function parseMonthYear(str) {
 }
 
 function fmtMonthYear(d) {
-  const M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return `${M[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 /* ── Auto-generate section description from entries ─────── */
 function buildSectionDescription(entries) {
   const parsed = [...entries]
-    .map(e => { const [s] = e.period.split(" – "); return { ...e, startDate: parseMonthYear(s) }; })
+    .map((e) => {
+      const [s] = e.period.split(" – ");
+      return { ...e, startDate: parseMonthYear(s) };
+    })
     .sort((a, b) => a.startDate - b.startDate);
 
   const compOrder = [];
   const compMap = new Map();
-  parsed.forEach(e => {
-    if (!compMap.has(e.company)) { compOrder.push(e.company); compMap.set(e.company, []); }
+  parsed.forEach((e) => {
+    if (!compMap.has(e.company)) {
+      compOrder.push(e.company);
+      compMap.set(e.company, []);
+    }
     compMap.get(e.company).push(e);
   });
 
@@ -59,6 +65,7 @@ function groupByCompany(entries) {
         company: job.company,
         location: job.location,
         url: job.url,
+        logo: job.logo,
         color: job.color,
         monogram: job.monogram,
         concurrent: job.concurrent,
@@ -213,6 +220,7 @@ function PromotionBanner({ color, fromRole, toRole }) {
    ────────────────────────────────────────────────────────── */
 function CompanyCard({ company }) {
   const { color, monogram, current, concurrent, roles } = company;
+  const [logoError, setLogoError] = useState(false);
   const hasPromotion = roles.length > 1;
 
   // Derive total period: oldest start → newest end
@@ -223,6 +231,13 @@ function CompanyCard({ company }) {
     const end = ends[0]; // newest entry is first
     return `${start} – ${end}`;
   })();
+
+  const handleImageLoad = (e) => {
+    // Ensure image loaded successfully
+    if (e.target.naturalWidth === 0) {
+      setLogoError(true);
+    }
+  };
 
   return (
     <div
@@ -239,10 +254,27 @@ function CompanyCard({ company }) {
       <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: color }} aria-hidden="true" />
 
       {/* ── Company header ─────────────────────────────── */}
-      <div className="flex items-center gap-3 px-4 sm:px-6 pt-4 sm:pt-5 pb-4 border-b ml-1" style={{ borderColor: `${color}15` }}>
-        {/* Monogram badge */}
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center font-mono text-sm font-bold shrink-0 select-none" style={{ backgroundColor: `${color}18`, color }}>
-          {monogram}
+      <div className="flex items-center gap-4 px-4 sm:px-6 pt-4 sm:pt-5 pb-4 border-b ml-1" style={{ borderColor: `${color}15` }}>
+        {/* Company logo or monogram badge */}
+        <div
+          className="w-14 h-14 rounded-xl flex items-center justify-center font-mono text-sm font-bold shrink-0 select-none overflow-hidden border relative"
+          style={{ backgroundColor: `${color}08`, borderColor: `${color}20` }}
+        >
+          {company.logo && !logoError ? (
+            <img
+              src={company.logo}
+              alt={`${company.company} logo`}
+              className="max-w-[80%] max-h-[80%] object-contain"
+              onError={() => setLogoError(true)}
+              onLoad={handleImageLoad}
+              loading="eager"
+              decoding="auto"
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full h-full" style={{ backgroundColor: `${color}18`, color }}>
+              {monogram}
+            </div>
+          )}
         </div>
 
         <div className="flex-1 min-w-0">
@@ -261,7 +293,7 @@ function CompanyCard({ company }) {
               </span>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
             <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-600">{totalPeriod}</span>
             <span className="font-mono text-[10px] text-zinc-300 dark:text-zinc-700" aria-hidden="true">
               ·
@@ -276,10 +308,25 @@ function CompanyCard({ company }) {
                   href={`https://${company.url}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-[11px] hover:underline underline-offset-2"
-                  style={{ color: `${color}90` }}
+                  className="inline-flex items-center gap-1.5 font-mono text-[11px] px-2.5 py-1 rounded-md transition-all duration-200 hover:shadow-md border"
+                  style={{
+                    color: color,
+                    borderColor: `${color}40`,
+                    backgroundColor: `${color}08`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = `${color}15`;
+                    e.currentTarget.style.borderColor = `${color}60`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = `${color}08`;
+                    e.currentTarget.style.borderColor = `${color}40`;
+                  }}
                   onClick={(e) => e.stopPropagation()}
                 >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
                   {company.url}
                 </a>
               </>
@@ -323,19 +370,19 @@ function CompanyCard({ company }) {
 function CareerTimeline({ entries }) {
   const now = new Date();
 
-  const parsed = entries.map(e => {
+  const parsed = entries.map((e) => {
     const [s, en] = e.period.split(" – ");
     return { ...e, startDate: parseMonthYear(s), endDate: parseMonthYear(en) };
   });
 
-  const minMs = Math.min(...parsed.map(e => e.startDate.getTime()));
+  const minMs = Math.min(...parsed.map((e) => e.startDate.getTime()));
   const maxMs = now.getTime();
   const range = maxMs - minMs;
-  const toPct = d => Math.min(100, ((d.getTime() - minMs) / range) * 100);
+  const toPct = (d) => Math.min(100, ((d.getTime() - minMs) / range) * 100);
 
   // Group by company, sort by earliest start
   const compMap = new Map();
-  parsed.forEach(e => {
+  parsed.forEach((e) => {
     if (!compMap.has(e.company)) compMap.set(e.company, []);
     compMap.get(e.company).push(e);
   });
@@ -343,10 +390,10 @@ function CareerTimeline({ entries }) {
   const bars = [...compMap.entries()]
     .map(([company, roles]) => ({
       label: company,
-      startMs: Math.min(...roles.map(r => r.startDate.getTime())),
-      endMs: Math.max(...roles.map(r => r.endDate.getTime())),
-      isCurrent: roles.some(r => r.current),
-      roles: roles.map(r => ({
+      startMs: Math.min(...roles.map((r) => r.startDate.getTime())),
+      endMs: Math.max(...roles.map((r) => r.endDate.getTime())),
+      isCurrent: roles.some((r) => r.current),
+      roles: roles.map((r) => ({
         label: r.role,
         pct: [toPct(r.startDate), toPct(r.endDate)],
         color: r.color,
@@ -357,11 +404,11 @@ function CareerTimeline({ entries }) {
 
   // Labels: overall start + each subsequent company start + current role start
   const labelDates = [new Date(minMs)];
-  bars.slice(1).forEach(b => labelDates.push(new Date(b.startMs)));
-  const currentEntry = parsed.find(e => e.current);
+  bars.slice(1).forEach((b) => labelDates.push(new Date(b.startMs)));
+  const currentEntry = parsed.find((e) => e.current);
   if (currentEntry) {
     const t = currentEntry.startDate.getTime();
-    const dup = labelDates.some(d => Math.abs(d.getTime() - t) < 1000 * 60 * 60 * 24 * 45);
+    const dup = labelDates.some((d) => Math.abs(d.getTime() - t) < 1000 * 60 * 60 * 24 * 45);
     if (!dup) labelDates.push(currentEntry.startDate);
   }
 
@@ -369,7 +416,7 @@ function CareerTimeline({ entries }) {
   const separatorPct = bars.length > 1 ? toPct(new Date(bars[1].startMs)) : null;
 
   // Footer note
-  const noteSpans = bars.map(b => {
+  const noteSpans = bars.map((b) => {
     const start = fmtMonthYear(new Date(b.startMs));
     const end = b.isCurrent ? "present" : fmtMonthYear(new Date(b.endMs));
     return `${b.label} (${start} – ${end})`;
@@ -387,16 +434,14 @@ function CareerTimeline({ entries }) {
 
       {/* Separator tick at first company transition */}
       <div className="relative h-px bg-zinc-200 dark:bg-zinc-800 mb-4">
-        {separatorPct !== null && (
-          <div className="absolute top-0 bottom-0 w-px bg-zinc-400 dark:bg-zinc-600" style={{ left: `${separatorPct}%` }} aria-hidden="true" />
-        )}
+        {separatorPct !== null && <div className="absolute top-0 bottom-0 w-px bg-zinc-400 dark:bg-zinc-600" style={{ left: `${separatorPct}%` }} aria-hidden="true" />}
       </div>
 
       <div className="space-y-4">
         {bars.map(({ label, roles: rBars }) => (
           <div key={label} className="flex items-center gap-3">
             <span className="font-mono text-[10px] text-zinc-500 dark:text-zinc-600 w-32 shrink-0 truncate">{label}</span>
-            <div className="relative flex-1 h-6 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+            <div className="relative flex-1 h-6 bg-zinc-300 dark:bg-zinc-800 rounded-full overflow-hidden">
               {rBars.map((b, i) => (
                 <div
                   key={i}
@@ -404,7 +449,7 @@ function CareerTimeline({ entries }) {
                   style={{
                     left: `${b.pct[0]}%`,
                     width: `${b.pct[1] - b.pct[0]}%`,
-                    backgroundColor: b.past ? `${b.color}40` : `${b.color}80`,
+                    backgroundColor: b.past ? `${b.color}60` : `${b.color}80`,
                     borderRight: i < rBars.length - 1 ? `1px solid ${b.color}` : "none",
                   }}
                 >
@@ -419,9 +464,7 @@ function CareerTimeline({ entries }) {
         ))}
       </div>
 
-      <p className="mt-3 font-mono text-[10px] text-zinc-400 dark:text-zinc-700">
-        {`// ${noteSpans.join(" → ")}`}
-      </p>
+      <p className="mt-3 font-mono text-[10px] text-zinc-400 dark:text-zinc-700">{`// ${noteSpans.join(" → ")}`}</p>
     </div>
   );
 }
@@ -431,13 +474,13 @@ export default function Experience() {
   const companies = groupByCompany(experience);
 
   return (
-    <section id="experience" aria-label="Sarwar Hossain | Sarwar Asik Work Experience" className="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+    <section
+      id="experience"
+      aria-label="Sarwar Hossain | Sarwar Asik Work Experience"
+      className="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800"
+    >
       <div className="max-w-6xl mx-auto px-6">
-        <SectionHeader
-          label="02 · career"
-          title="Experience"
-          description={buildSectionDescription(experience)}
-        />
+        <SectionHeader label="02 · career" title="Experience" description={buildSectionDescription(experience)} />
 
         {/* Mini Gantt timeline */}
         <CareerTimeline entries={experience} />
