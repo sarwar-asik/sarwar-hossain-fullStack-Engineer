@@ -3,9 +3,12 @@ export const config = { runtime: "edge" };
 
 const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-const MIN_COUNT = 500;
+const MIN_UNIQUE = 500;
+const MIN_TOTAL = 620;
+const UNIQUE_KEY = "portfolio:visits:total";
+const PAGEVIEWS_KEY = "portfolio:visits:pageviews";
 const LOG_KEY = "portfolio:visits:log";
-const LOG_CAP = 5000; // keep newest 5000 visit records
+const LOG_CAP = 5000;
 
 // ── Redis helpers ────────────────────────────────────────────
 
@@ -80,35 +83,42 @@ export default async function handler(req) {
   }
 
   if (!REDIS_URL || !REDIS_TOKEN) {
-    return new Response(JSON.stringify({ count: MIN_COUNT }), {
+    return new Response(JSON.stringify({ total: MIN_TOTAL, unique: MIN_UNIQUE }), {
       headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
     });
   }
 
-  // ── Unique-visitor dedup (IP, 24 h TTL) ──
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+  // Always increment total visits (every scroll-triggered call)
+  let pageviews = Number(await redis("incr", PAGEVIEWS_KEY));
 
-  const totalKey = "portfolio:visits:total";
+  // ── Unique-visitor dedup (IP, 24 h TTL) ──
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? req.headers.get("x-real-ip") ?? "unknown";
+
   const ipKey = `portfolio:visits:ip:${ip}`;
   const isNew = !(await redis("get", ipKey));
 
-  let count;
+  let unique;
   if (isNew) {
     await redis("setex", ipKey, "86400", "1");
-    count = Number(await redis("incr", totalKey));
+    unique = Number(await redis("incr", UNIQUE_KEY));
   } else {
-    count = parseInt(await redis("get", totalKey), 10) || 0;
+    unique = parseInt(await redis("get", UNIQUE_KEY), 10) || 0;
   }
 
-  // Enforce floor — preserve raw for debug
-  const rawCount = count;
-  if (count < MIN_COUNT) {
-    await redis("set", totalKey, String(MIN_COUNT));
-    count = MIN_COUNT;
+  // Apply floors
+  const rawTotal = pageviews;
+  const rawUnique = unique;
+
+  if (pageviews < MIN_TOTAL) {
+    await redis("set", PAGEVIEWS_KEY, String(MIN_TOTAL));
+    pageviews = MIN_TOTAL;
   }
+  if (unique < MIN_UNIQUE) {
+    await redis("set", UNIQUE_KEY, String(MIN_UNIQUE));
+    unique = MIN_UNIQUE;
+  }
+  // Logical invariant: total visits >= unique visitors
+  const total = Math.max(pageviews, unique);
 
   // ── Build analytics payload ──
   const ua = req.headers.get("user-agent") ?? "";
@@ -116,7 +126,7 @@ export default async function handler(req) {
   const country = req.headers.get("x-vercel-ip-country") ?? "XX";
   const city = decodeURIComponent(req.headers.get("x-vercel-ip-city") ?? "") || "unknown";
   const ts = Date.now();
-  const day = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const day = new Date().toISOString().slice(0, 10);
 
   const ref = parseRefDomain(referer);
   const device = parseDevice(ua);
@@ -127,13 +137,11 @@ export default async function handler(req) {
 
   // ── Persist (one pipeline round-trip) ──
   const writes = [
-    // Chronological visit log, capped at LOG_CAP entries (score = timestamp)
     ["ZADD", LOG_KEY, String(ts), payload],
     ["ZREMRANGEBYRANK", LOG_KEY, "0", String(-(LOG_CAP + 1))],
   ];
 
   if (isNew) {
-    // Bucketed counters — unique visitors only, fast O(1) reads later
     writes.push(
       ["INCR", `portfolio:stats:country:${country}`],
       ["INCR", `portfolio:stats:device:${device}`],
@@ -146,7 +154,7 @@ export default async function handler(req) {
 
   await redisPipeline(writes);
 
-  return new Response(JSON.stringify({ count, _d: rawCount }), {
+  return new Response(JSON.stringify({ total, unique, _d: { rawTotal, rawUnique } }), {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
